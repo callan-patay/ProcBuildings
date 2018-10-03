@@ -24,6 +24,8 @@
     <ClInclude Include="d3dclass.h" />
     <ClInclude Include="GraphicsClass.h" />
     <ClInclude Include="InputClass.h" />
+    <ClInclude Include="LightClass.h" />
+    <ClInclude Include="LightShaderClass.h" />
     <ClInclude Include="ModelClass.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SystemClass.h" />
@@ -36,6 +38,8 @@
     <ClCompile Include="d3dclass.cpp" />
     <ClCompile Include="GraphicsClass.cpp" />
     <ClCompile Include="InputClass.cpp" />
+    <ClCompile Include="LightClass.cpp" />
+    <ClCompile Include="LightShaderClass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelClass.cpp" />
     <ClCompile Include="SystemClass.cpp" />
@@ -47,6 +51,8 @@
       <FileType>Document</FileType>
     </None>
     <None Include="color.vs" />
+    <None Include="light.ps" />
+    <None Include="light.vs" />
     <None Include="texture.ps" />
     <None Include="texture.vs" />
   </ItemGroup>
@@ -57,12 +63,15 @@
     <Image Include="stone01.tga" />
     <Image Include="z.dds" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Cube.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BCECCE51-0769-4894-BC08-9D2D5F3F269F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DirectXAT</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

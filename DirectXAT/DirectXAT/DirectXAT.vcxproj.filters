@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{99e90e4f-dbb0-4ad3-943f-a4f45b60f1c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TextFiles">
+      <UniqueIdentifier>{5e544c32-5c4d-4186-901c-03a1705e8670}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsClass.h">
@@ -46,6 +49,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureShaderClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightShaderClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,6 +89,12 @@
     <ClCompile Include="TextureShaderClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightShaderClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -92,6 +107,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="color.ps">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="light.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="light.ps">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
@@ -111,5 +132,10 @@
     <Image Include="stone01.tga">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Cube.txt">
+      <Filter>Source Files\TextFiles</Filter>
+    </Text>
   </ItemGroup>
 </Project>
