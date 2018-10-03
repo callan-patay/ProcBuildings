@@ -130,6 +130,36 @@ bool SystemClass::Frame()
 		return false;
 	}
 
+	if (m_Input->IsKeyDown('W'))
+	{
+		m_Graphics->moveCamera(0.0f, 0.2f, 0.0f);
+	}
+	if (m_Input->IsKeyDown('S'))
+	{
+		m_Graphics->moveCamera(0.0f, -0.2f, 0.0f);
+	}
+	if (m_Input->IsKeyDown('A'))
+	{
+		m_Graphics->moveCamera(-0.2f, 0.0f, 0.0f);
+	}
+	if (m_Input->IsKeyDown('D'))
+	{
+		m_Graphics->moveCamera(0.2f, 0.0f, 0.0f);
+	}
+	if (m_Input->IsKeyDown('E'))
+	{
+		m_Graphics->moveCamera(0.0f, 0.0f, 0.2f);
+	}
+	if (m_Input->IsKeyDown('Q'))
+	{
+		m_Graphics->moveCamera(0.0f, 0.0f, -0.2f);
+	}
+
+
+	DWORD currentTime = GetTickCount();
+	deltaTime = min((float)(currentTime - playTime) / 1000.0f, 0.1f);
+	playTime = currentTime;
+
 	// Do the frame processing for the graphics object.
 	result = m_Graphics->Frame();
 	if (!result)
@@ -186,7 +216,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	m_applicationName = L"Engine";
 
 	// Setup the windows class with default settings.
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wc.style = CS_OWNDC;
 	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;

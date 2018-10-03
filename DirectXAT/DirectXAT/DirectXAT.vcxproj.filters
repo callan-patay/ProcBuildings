@@ -82,11 +82,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="color.ps">
-      <Filter>Source Files\Shaders</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="color.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
@@ -94,6 +89,9 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="texture.ps">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="color.ps">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
@@ -108,6 +106,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="kerrigan.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="stone01.tga">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -54,6 +54,7 @@
     <Image Include="brick-texture-png-0.png" />
     <Image Include="brick.tga" />
     <Image Include="kerrigan.tga" />
+    <Image Include="stone01.tga" />
     <Image Include="z.dds" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

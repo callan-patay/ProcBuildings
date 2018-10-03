@@ -75,7 +75,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Initialize the model objct.
-	result = m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/brick-texture-png-0.png");
+	result = m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/stone01.tga");
 
 	if (!result)
 	{
@@ -128,6 +128,10 @@ void GraphicsClass::Shutdown()
 	return;
 }
 
+void GraphicsClass::moveCamera(float x, float y, float z)
+{
+	m_Camera->move(x, y, z);
+}
 
 bool GraphicsClass::Frame()
 {
@@ -149,7 +153,7 @@ bool GraphicsClass::Render()
 
 
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	m_D3D->BeginScene(0.25f, 0.5f, 1.0f, 1.0f);
 
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();

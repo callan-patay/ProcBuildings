@@ -28,7 +28,12 @@ void CameraClass::SetPosition(float x, float y, float z)
 	m_positionZ = z;
 	return;
 }
-
+void CameraClass::move(float x, float y, float z)
+{
+	m_positionX += x;
+	m_positionY += y;
+	m_positionZ += z;
+}
 
 void CameraClass::SetRotation(float x, float y, float z)
 {

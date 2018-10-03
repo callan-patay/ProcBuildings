@@ -34,7 +34,7 @@ public:
 	GraphicsClass();
 	GraphicsClass(const GraphicsClass&);
 	~GraphicsClass();
-
+	void moveCamera(float x, float y, float z);
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame();
