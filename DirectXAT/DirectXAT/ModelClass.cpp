@@ -6,6 +6,7 @@ ModelClass::ModelClass()
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
 	m_Texture = 0;
+	m_worldMat = XMMatrixIdentity();
 }
 
 
@@ -41,6 +42,11 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	{
 		return false;
 	}
+
+
+	m_pos.x = 0.0f;
+	m_pos.y = 0.0f;
+	m_pos.z = 0.0f;
 
 	return true;
 }
@@ -314,4 +320,44 @@ void ModelClass::ReleaseModel()
 	}
 
 	return;
+}
+
+XMMATRIX ModelClass::getWorldMat()
+{
+	return m_worldMat;
+}
+
+void ModelClass::setPosition(float x, float y, float z)
+{
+	m_pos.x = x;
+	m_pos.y = y;
+	m_pos.z = z;
+}
+
+void ModelClass::Tick()
+{
+
+	// Update the rotation variable each frame.
+	m_pitch += (float)XM_PI * 0.01f;
+	if (m_pitch > 360.0f)
+	{
+		m_pitch -= 360.0f;
+	}
+
+
+	m_pos.x += 1.0f * 0.01f;
+
+
+
+
+	XMMATRIX scaleMat = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX rotMat = XMMatrixRotationRollPitchYaw(m_roll, m_pitch, m_yaw);
+
+	XMMATRIX transMat = XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
+
+
+	m_worldMat = transMat;
+
+
+
 }

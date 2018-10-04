@@ -10,7 +10,6 @@ GraphicsClass::GraphicsClass()
 
 	m_D3D = 0;
 	m_Camera = 0;
-	m_Model = 0;
 	m_ColorShader = 0;
 	m_TextureShader = 0;
 	m_LightShader = 0;
@@ -56,7 +55,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -100.0f);
 
 
 	// Create the texture shader object.
@@ -66,58 +65,73 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+	int posX = 0;
+	int posY = 0;
+
+	int row = 10;
+	int col = 10;
+
+
+	for (int r = 0; r < row; r++)
+	{
+		for (int c = 0; c < col; c++)
+		{
+			ModelClass* m_Model = new ModelClass();
+			// Initialize the model objct.
+			m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/stone01.tga", "../DirectXAT/cube.txt");
+			m_Model->setPosition(posX, posY, 0.0f);
+			m_Models.push_back(m_Model);
+			posY += 5;
+		}
+		posY = 0;
+		posX += 5;
+	}
 
 
 	// Create the model object.
-	m_Model = new ModelClass;
-	if (!m_Model)
-	{
-		return false;
-	}
 
-	// Initialize the model objct.
-	result = m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/stone01.tga", "../DirectXAT/cube.txt");
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
-		return false;
-	}	
+
+
+
+
+
+
 	// Create the light shader object.
-	m_LightShader = new LightShaderClass;
-	if (!m_LightShader)
-	{
-		return false;
-	}
+m_LightShader = new LightShaderClass;
+if (!m_LightShader)
+{
+	return false;
+}
 
-	// Initialize the light shader object.
-	result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
-		return false;
-	}
+// Initialize the light shader object.
+result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
+if (!result)
+{
+	MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
+	return false;
+}
 
-	// Create the light object.
-	m_Light = new LightClass;
-	if (!m_Light)
-	{
-		return false;
-	}
+// Create the light object.
+m_Light = new LightClass;
+if (!m_Light)
+{
+	return false;
+}
 
-	// Initialize the light object.
-	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+// Initialize the light object.
+m_Light->SetDiffuseColor(sin(1.0f), sin(1.0f), sin(1.0f), 1.0f);
+m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 
 
-	// Initialize the texture shader object.
-	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
-		return false;
-	}
+// Initialize the texture shader object.
+result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
+if (!result)
+{
+	MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+	return false;
+}
 
-	return true;
+return true;
 }
 
 
@@ -146,11 +160,10 @@ void GraphicsClass::Shutdown()
 		m_LightShader = 0;
 	}
 	// Release the model object.
-	if (m_Model)
+	for (int i = 0; i < m_Models.size(); i++)
 	{
-		m_Model->Shutdown();
-		delete m_Model;
-		m_Model = 0;
+		delete m_Models[i];
+		m_Models[i] = 0;
 	}
 
 	// Release the camera object.
@@ -173,23 +186,24 @@ void GraphicsClass::moveCamera(float x, float y, float z)
 	m_Camera->move(x, y, z);
 }
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(float& dt)
 {
 	bool result;
 	// Render the graphics scene.
 
 
-	static float rotation = 0.0f;
+
 
 
 	// Update the rotation variable each frame.
-	rotation += (float)XM_PI * 0.01f;
-	if (rotation > 360.0f)
+	for (int i = 0; i < m_Models.size(); i++)
 	{
-		rotation -= 360.0f;
+		m_Models[i]->Tick();
 	}
 
-	result = Render(rotation);
+	
+	
+	result = Render();
 	if (!result)
 	{
 		return false;
@@ -198,7 +212,7 @@ bool GraphicsClass::Frame()
 }
 
 
-bool GraphicsClass::Render(float rotation)
+bool GraphicsClass::Render()
 {
 	XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
 	bool result;
@@ -215,20 +229,30 @@ bool GraphicsClass::Render(float rotation)
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
-	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	worldMatrix = XMMatrixRotationY(rotation);
-
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_D3D->GetDeviceContext());
 
 
-	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	for (int i = 0; i < m_Models.size(); i++)
+	{
+
+		worldMatrix = m_Models[i]->getWorldMat();
+
+		// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+		m_Models[i]->Render(m_D3D->GetDeviceContext());
+
+
+		// Render the model using the light shader.
+		result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Models[i]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+			m_Models[i]->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	}
+
+
 	if (!result)
 	{
 		return false;
 	}
+
+
+
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 	return true;

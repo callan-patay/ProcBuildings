@@ -17,7 +17,7 @@
 #include "TextureShaderClass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
-
+#include <vector>
 
 /////////////
 // GLOBALS //
@@ -39,15 +39,15 @@ public:
 	void moveCamera(float x, float y, float z);
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame();
+	bool Frame(float&);
 
 private:
-	bool Render(float);
+	bool Render();
 
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	ModelClass* m_Model;
+	std::vector<ModelClass*> m_Models;
 	TextureShaderClass* m_TextureShader;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;

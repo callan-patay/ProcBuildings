@@ -12,6 +12,7 @@
 #include <d3d11.h>
 #include<DirectXMath.h>
 #include "TextureClass.h"
+#include "LightShaderClass.h"
 #include <fstream>
 using namespace std;
 
@@ -54,6 +55,9 @@ public:
 	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, char*);
 	bool LoadModel(char*);
 	void ReleaseModel();
+	XMMATRIX getWorldMat();
+	void setPosition(float, float, float);
+	void Tick();
 private:
 	void ShutdownBuffers();
 	void ReleaseTexture();
@@ -63,6 +67,13 @@ private:
 	int m_vertexCount, m_indexCount;
 	TextureClass* m_Texture;
 	ModelType* m_model;
+	XMMATRIX m_worldMat;
+	XMFLOAT3 m_pos, m_scale;
+	
+	float m_roll, m_pitch, m_yaw;
+
+
+
 };
 
 #endif

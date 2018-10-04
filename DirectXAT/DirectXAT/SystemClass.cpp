@@ -161,7 +161,7 @@ bool SystemClass::Frame()
 	playTime = currentTime;
 
 	// Do the frame processing for the graphics object.
-	result = m_Graphics->Frame();
+	result = m_Graphics->Frame(deltaTime);
 	if (!result)
 	{
 		return false;
