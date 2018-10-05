@@ -67,7 +67,7 @@ private:
 	int m_vertexCount, m_indexCount;
 	TextureClass* m_Texture;
 	ModelType* m_model;
-	XMMATRIX m_worldMat;
+	XMMATRIX m_worldMat, m_fudge;
 	XMFLOAT3 m_pos, m_scale;
 	
 	float m_roll, m_pitch, m_yaw;

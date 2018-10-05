@@ -7,6 +7,7 @@ ModelClass::ModelClass()
 	m_indexBuffer = 0;
 	m_Texture = 0;
 	m_worldMat = XMMatrixIdentity();
+	m_fudge = XMMatrixIdentity();
 }
 
 
@@ -48,6 +49,15 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	m_pos.y = 0.0f;
 	m_pos.z = 0.0f;
 
+
+
+	m_scale.x = 1.0f;
+	m_scale.y = 3.0f;
+	m_scale.z = 1.0f;
+
+	m_yaw = 0.0f;
+	m_pitch = 0.0f;
+	m_roll = 0.0f;
 	return true;
 }
 
@@ -345,7 +355,27 @@ void ModelClass::Tick()
 	}
 
 
-	m_pos.x += 1.0f * 0.01f;
+	m_roll += (float)XM_PI * 0.01f;
+	if (m_roll > 360.0f)
+	{
+		m_roll -= 360.0f;
+	}
+
+
+	m_yaw += (float)XM_PI * 0.01f;
+	if (m_yaw > 360.0f)
+	{
+		m_yaw -= 360.0f;
+	}
+
+
+	
+
+
+
+	//m_pos.x += 1.0f * 0.01f;
+
+
 
 
 
@@ -356,7 +386,7 @@ void ModelClass::Tick()
 	XMMATRIX transMat = XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
 
 
-	m_worldMat = transMat;
+	m_worldMat = m_fudge * scaleMat* rotMat*  transMat;
 
 
 

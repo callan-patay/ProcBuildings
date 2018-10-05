@@ -55,7 +55,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -100.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -20.0f);
 
 
 	// Create the texture shader object.
