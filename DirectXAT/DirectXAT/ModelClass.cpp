@@ -52,7 +52,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 
 
 	m_scale.x = 1.0f;
-	m_scale.y = 3.0f;
+	m_scale.y = 1.5f;
 	m_scale.z = 1.0f;
 
 	m_yaw = 0.0f;
@@ -344,36 +344,53 @@ void ModelClass::setPosition(float x, float y, float z)
 	m_pos.z = z;
 }
 
-void ModelClass::Tick()
+void ModelClass::Tick(float& dt)
 {
+	static bool limitReached = true;
+
+	if (!limitReached && m_scale.y <= 2.0f)
+	{
+		m_scale.y += 1.0f * dt;
+	}
+	else
+	{
+		limitReached = true;
+	}
+
+	if (limitReached && m_scale.y >= 1.0f)
+	{
+		m_scale.y -= 1.0f * dt;
+	}
+	else
+	{
+		limitReached = false;
+	}
+
+
+
 
 	// Update the rotation variable each frame.
-	m_pitch += (float)XM_PI * 0.01f;
+	m_pitch += (float)XM_PI * dt;
 	if (m_pitch > 360.0f)
 	{
 		m_pitch -= 360.0f;
 	}
 
 
-	m_roll += (float)XM_PI * 0.01f;
+	m_roll += (float)XM_PI * dt;
 	if (m_roll > 360.0f)
 	{
 		m_roll -= 360.0f;
 	}
 
 
-	m_yaw += (float)XM_PI * 0.01f;
-	if (m_yaw > 360.0f)
-	{
-		m_yaw -= 360.0f;
-	}
 
 
 	
 
 
 
-	//m_pos.x += 1.0f * 0.01f;
+	
 
 
 

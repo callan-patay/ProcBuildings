@@ -57,7 +57,7 @@ public:
 	void ReleaseModel();
 	XMMATRIX getWorldMat();
 	void setPosition(float, float, float);
-	void Tick();
+	void Tick(float&);
 private:
 	void ShutdownBuffers();
 	void ReleaseTexture();

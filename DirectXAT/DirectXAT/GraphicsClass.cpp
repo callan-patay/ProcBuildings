@@ -78,7 +78,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		{
 			ModelClass* m_Model = new ModelClass();
 			// Initialize the model objct.
-			m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/stone01.tga", "../DirectXAT/cube.txt");
+			m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/House.tga", "../DirectXAT/cube.txt");
 			m_Model->setPosition(posX, posY, 0.0f);
 			m_Models.push_back(m_Model);
 			posY += 5;
@@ -198,7 +198,7 @@ bool GraphicsClass::Frame(float& dt)
 	// Update the rotation variable each frame.
 	for (int i = 0; i < m_Models.size(); i++)
 	{
-		m_Models[i]->Tick();
+		m_Models[i]->Tick(dt);
 	}
 
 	

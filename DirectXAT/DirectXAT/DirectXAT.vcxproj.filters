@@ -132,6 +132,9 @@
     <Image Include="stone01.tga">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="House.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Cube.txt">
