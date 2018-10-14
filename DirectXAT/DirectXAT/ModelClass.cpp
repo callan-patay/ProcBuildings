@@ -52,7 +52,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 
 
 	m_scale.x = 1.0f;
-	m_scale.y = 1.5f;
+	m_scale.y = 1.0f;
 	m_scale.z = 1.0f;
 
 	m_yaw = 0.0f;
@@ -346,55 +346,47 @@ void ModelClass::setPosition(float x, float y, float z)
 
 void ModelClass::Tick(float& dt)
 {
-	static bool limitReached = true;
+	//static bool limitReached = true;
 
-	if (!limitReached && m_scale.y <= 2.0f)
-	{
-		m_scale.y += 1.0f * dt;
-	}
-	else
-	{
-		limitReached = true;
-	}
+	//if (!limitReached && m_scale.y <= 2.0f)
+	//{
+	//	m_scale.y += 1.0f * dt;
+	//}
+	//else
+	//{
+	//	limitReached = true;
+	//}
 
-	if (limitReached && m_scale.y >= 1.0f)
-	{
-		m_scale.y -= 1.0f * dt;
-	}
-	else
-	{
-		limitReached = false;
-	}
+	//if (limitReached && m_scale.y >= 1.0f)
+	//{
+	//	m_scale.y -= 1.0f * dt;
+	//}
+	//else
+	//{
+	//	limitReached = false;
+	//}
 
 
 
 
 	// Update the rotation variable each frame.
-	m_pitch += (float)XM_PI * dt;
+	m_pitch += (float)XM_PI * dt / 2;
 	if (m_pitch > 360.0f)
 	{
 		m_pitch -= 360.0f;
 	}
 
 
-	m_roll += (float)XM_PI * dt;
-	if (m_roll > 360.0f)
-	{
-		m_roll -= 360.0f;
-	}
 
+	//m_pitch = 45.0f;
+	////m_roll = 45.0f;
+	//m_yaw = 45.0f;
 
-
-
-	
-
-
-
-	
-
-
-
-
+	//m_roll += (float)XM_PI * dt;
+	//if (m_roll > 360.0f)
+	//{
+	//	m_roll -= 360.0f;
+	//}
 
 
 	XMMATRIX scaleMat = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);

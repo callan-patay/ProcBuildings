@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 #include "TextureClass.h"
+//#include <AntTweakBar.h>
 
 
 GraphicsClass::GraphicsClass()
@@ -119,7 +120,8 @@ if (!m_Light)
 }
 
 // Initialize the light object.
-m_Light->SetDiffuseColor(sin(1.0f), sin(1.0f), sin(1.0f), 1.0f);
+m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 
 
@@ -242,7 +244,7 @@ bool GraphicsClass::Render()
 
 		// Render the model using the light shader.
 		result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Models[i]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-			m_Models[i]->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+			m_Models[i]->GetTexture(), m_Light->GetDirection(),m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
 	}
 
 
