@@ -13,6 +13,8 @@
 #include<DirectXMath.h>
 #include "TextureClass.h"
 #include "LightShaderClass.h"
+#include "ObjExporter.h"
+#include <vector>
 #include <fstream>
 using namespace std;
 
@@ -32,6 +34,10 @@ private:
 		XMFLOAT3 normal;
 	};
 
+
+
+
+public:
 	struct ModelType
 	{
 		float x, y, z;
@@ -41,7 +47,7 @@ private:
 
 
 
-public:
+
 	ModelClass();
 	ModelClass(const ModelClass&);
 	~ModelClass();	
@@ -58,6 +64,12 @@ public:
 	XMMATRIX getWorldMat();
 	void setPosition(float, float, float);
 	void Tick(float&);
+	void createModel(vector<ModelType> data, vector<long> indices);
+
+
+
+	vector<ModelType> GetModel();
+	vector<long> GetIndices();
 private:
 	void ShutdownBuffers();
 	void ReleaseTexture();
@@ -65,8 +77,10 @@ private:
 private:
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount;
+	unsigned long* indices;
+	vector<long> indicesVector;
 	TextureClass* m_Texture;
-	ModelType* m_model;
+	vector<ModelClass::ModelType> m_model;
 	XMMATRIX m_worldMat, m_fudge;
 	XMFLOAT3 m_pos, m_scale;
 	

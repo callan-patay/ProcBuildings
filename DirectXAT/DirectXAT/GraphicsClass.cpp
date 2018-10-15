@@ -69,8 +69,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	int posX = 0;
 	int posY = 0;
 
-	int row = 10;
-	int col = 10;
+	int row = 1;
+	int col = 1;
 
 
 	for (int r = 0; r < row; r++)
@@ -88,6 +88,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		posX += 5;
 	}
 
+	m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
 
 	// Create the model object.
 

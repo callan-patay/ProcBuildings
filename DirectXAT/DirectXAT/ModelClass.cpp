@@ -1,5 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "modelclass.h"
+#include <string>;
 
 ModelClass::ModelClass()
 {
@@ -70,6 +71,9 @@ void ModelClass::Shutdown()
 	// Release the model data.
 	ReleaseModel();
 
+	delete indices;
+	indices = 0;
+
 	return;
 }
 
@@ -99,7 +103,7 @@ ID3D11ShaderResourceView* ModelClass::GetTexture()
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	VertexType* vertices;
-	unsigned long* indices;
+	indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
@@ -121,6 +125,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 	// Load the vertex array with data.
 	// Load the vertex array and index array with data.
+	indicesVector.reserve(m_indexCount);
 	for (int i = 0; i<m_vertexCount; i++)
 	{
 		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
@@ -128,6 +133,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
 
 		indices[i] = i;
+		indicesVector.push_back(indices[i]);
 	}
 
 
@@ -135,6 +141,13 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	indices[0] = 0;  // Bottom left.
 	indices[1] = 1;  // Top middle.
 	indices[2] = 2;  // Bottom right.
+
+
+
+
+
+
+
 
 					 // Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -184,6 +197,16 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	indices = 0;
 
 	return true;
+}
+
+vector<ModelClass::ModelType> ModelClass::GetModel()
+{
+	return m_model;
+}
+
+vector<long> ModelClass::GetIndices()
+{
+	return indicesVector;
 }
 
 void ModelClass::ShutdownBuffers()
@@ -292,11 +315,8 @@ bool ModelClass::LoadModel(char* filename)
 	m_indexCount = m_vertexCount;
 
 	// Create the model using the vertex count that was read in.
-	m_model = new ModelType[m_vertexCount];
-	if (!m_model)
-	{
-		return false;
-	}
+	m_model.reserve(m_vertexCount);
+
 
 	// Read up to the beginning of the data.
 	fin.get(input);
@@ -310,24 +330,36 @@ bool ModelClass::LoadModel(char* filename)
 	// Read in the vertex data.
 	for (i = 0; i<m_vertexCount; i++)
 	{
-		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
-		fin >> m_model[i].tu >> m_model[i].tv;
-		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
+		ModelType m_modelData;
+
+
+		fin >> m_modelData.x >> m_modelData.y >> m_modelData.z;
+		fin >> m_modelData.tu >> m_modelData.tv;
+		fin >> m_modelData.nx >> m_modelData.ny >> m_modelData.nz;
+
+		m_model.push_back(m_modelData);
+
 	}
 
 	// Close the model file.
 	fin.close();
 
+
+
+
+
+
+
+
+	//createModel();
 	return true;
 }
 
 void ModelClass::ReleaseModel()
 {
-	if (m_model)
-	{
-		delete[] m_model;
-		m_model = 0;
-	}
+
+
+
 
 	return;
 }
@@ -400,3 +432,71 @@ void ModelClass::Tick(float& dt)
 
 
 }
+
+void ModelClass::createModel(vector<ModelType> data, vector<long> indices)
+{
+	ofstream file("House.obj");
+
+	vector<string> positions, texCords, normals, faces;
+
+
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		positions.push_back("v " + to_string(data[i].x)
+			+ " " + to_string(data[i].y) + " "
+			+ to_string(data[i].z));
+
+
+		texCords.push_back("vt " + to_string(data[i].tu)
+			+ " " + to_string(data[i].tu));
+
+		normals.push_back("vn " + to_string(data[i].nx)
+			+ " " + to_string(data[i].ny)
+			+ " " + to_string(data[i].nz));
+
+
+
+	}
+
+	for (int i = 0; i < indices.size(); i++)
+	{
+		faces.push_back(to_string(indices[i] + 1) + "/" + to_string(indices[i] + 1) + "/" + to_string(indices[i] + 1) + " ");
+
+	}
+
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		file << positions[i] << endl;
+	}
+	file << endl;
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		file << texCords[i] << endl;
+	}
+	file << endl;
+
+	for (int i = 0; i < data.size(); i++)
+	{
+		file << normals[i] << endl;
+	}
+	file << endl;
+
+
+
+	for (int i = 0; i < indices.size(); i += 3)
+	{
+		file << "f " + faces[i] + faces[i + 1] + faces[i + 2] << endl;
+	}
+
+
+}
+
+
+
+//ModelType* ModelClass::GetModel()
+//{
+//	return m_model;
+//}
