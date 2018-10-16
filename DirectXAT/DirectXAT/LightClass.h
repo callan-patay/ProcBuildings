@@ -26,10 +26,10 @@ public:
 	XMFLOAT4 GetDiffuseColor();
 	XMFLOAT3 GetDirection();
 
-private:
 	XMFLOAT4 m_diffuseColor;
 	XMFLOAT3 m_direction;
 	XMFLOAT4 m_ambientColor;
+private:
 };
 
 #endif

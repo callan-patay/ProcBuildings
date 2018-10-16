@@ -65,9 +65,13 @@ public:
 	void setPosition(float, float, float);
 	void Tick(float&);
 	void createModel(vector<ModelType> data, vector<long> indices);
+	float getRoll();
+	float getYaw();
+	float getPitch();
 
-
-
+	float m_roll;
+	float m_pitch, m_yaw;
+	XMFLOAT3 m_pos, m_scale;
 	vector<ModelType> GetModel();
 	vector<long> GetIndices();
 private:
@@ -82,9 +86,7 @@ private:
 	TextureClass* m_Texture;
 	vector<ModelClass::ModelType> m_model;
 	XMMATRIX m_worldMat, m_fudge;
-	XMFLOAT3 m_pos, m_scale;
 	
-	float m_roll, m_pitch, m_yaw;
 
 
 

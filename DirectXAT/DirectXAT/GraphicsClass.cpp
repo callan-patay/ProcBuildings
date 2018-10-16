@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 #include "TextureClass.h"
-//#include <AntTweakBar.h>
+
 
 
 GraphicsClass::GraphicsClass()
@@ -56,7 +56,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -20.0f);
+	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
 
 
 	// Create the texture shader object.
@@ -88,59 +88,86 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		posX += 5;
 	}
 
-	m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+	
 
 	// Create the model object.
 
 
 
 
+	TwInit(TW_DIRECT3D11, m_D3D->GetDevice());
+	TwWindowSize(screenWidth, screenHeight);
 
+
+	TwBar *myBar;
+	myBar = TwNewBar("Model");
+	int barSize[2] = { 250, 550 };
+	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
 
 	// Create the light shader object.
-m_LightShader = new LightShaderClass;
-if (!m_LightShader)
-{
-	return false;
+	m_LightShader = new LightShaderClass;
+	if (!m_LightShader)
+	{
+		return false;
+	}
+
+	// Initialize the light shader object.
+	result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the light object.
+	m_Light = new LightClass;
+	if (!m_Light)
+	{
+		return false;
+	}
+
+	// Initialize the light object.
+	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+
+	TwAddVarRW(myBar, "Roll", TW_TYPE_FLOAT, &m_Models[0]->m_roll, "Group='Rotation' min=0 max=360 step=0.1");
+	TwAddVarRW(myBar, "Pitch", TW_TYPE_FLOAT, &m_Models[0]->m_pitch, "Group='Rotation' min=0 max=360 step=0.1");
+	TwAddVarRW(myBar, "Yaw", TW_TYPE_FLOAT, &m_Models[0]->m_yaw, "Group='Rotation' min=0 max=360 step=0.1");
+
+	TwAddVarRW(myBar, "X", TW_TYPE_FLOAT, &m_Models[0]->m_pos.x, "Group='Position' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "Y", TW_TYPE_FLOAT, &m_Models[0]->m_pos.y, "Group='Position' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "Z", TW_TYPE_FLOAT, &m_Models[0]->m_pos.z, "Group='Position' min=-100 max=100 step=0.1");
+
+	TwAddVarRW(myBar, "Direction", TW_TYPE_DIR3F, &m_Light->m_direction, "Group='Light' opened=true axisz=-z showval=false");
+	TwAddVarRW(myBar, "Light R", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.x, "Group='Light' min=0 max=1.0 step=0.05");
+	TwAddVarRW(myBar, "Light G", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.y, "Group='Light' min=0 max=1.0 step=0.05");
+	TwAddVarRW(myBar, "Light B", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.z, "Group='Light' min=0 max=1.0 step=0.05");
+
+	//TwAddVarRW(myBar, "Ambient R", TW_TYPE_FLOAT, &m_Light->m_ambientColor.x, "Group='Light' min=0 max=1.0 step=0.05");
+	//TwAddVarRW(myBar, "Ambient G", TW_TYPE_FLOAT, &m_Light->m_ambientColor.y, "Group='Light' min=0 max=1.0 step=0.05");
+	//TwAddVarRW(myBar, "Ambient B", TW_TYPE_FLOAT, &m_Light->m_ambientColor.z, "Group='Light' min=0 max=1.0 step=0.05");
+	
+	TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=a");
+
+	// Initialize the texture shader object.
+	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	return true;
 }
 
-// Initialize the light shader object.
-result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
-if (!result)
-{
-	MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
-	return false;
-}
-
-// Create the light object.
-m_Light = new LightClass;
-if (!m_Light)
-{
-	return false;
-}
-
-// Initialize the light object.
-m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
-m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-m_Light->SetDirection(0.0f, 0.0f, 1.0f);
-
-
-// Initialize the texture shader object.
-result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
-if (!result)
-{
-	MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
-	return false;
-}
-
-return true;
-}
 
 
 void GraphicsClass::Shutdown()
 {
 	// Release the texture shader object.
+	TwTerminate();
 	if (m_TextureShader)
 	{
 		m_TextureShader->Shutdown();
@@ -195,6 +222,12 @@ bool GraphicsClass::Frame(float& dt)
 	// Render the graphics scene.
 
 
+	if (makeModel)
+	{
+		m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+		makeModel = false;
+	}
+
 
 
 
@@ -215,11 +248,12 @@ bool GraphicsClass::Frame(float& dt)
 }
 
 
+
+
 bool GraphicsClass::Render()
 {
 	XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
 	bool result;
-
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.25f, 0.5f, 1.0f, 1.0f);
@@ -255,6 +289,7 @@ bool GraphicsClass::Render()
 	}
 
 
+	TwDraw();
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();

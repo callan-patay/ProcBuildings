@@ -1,5 +1,5 @@
 #include "systemclass.h"
-
+#include "AntTweakBar.h"
 
 SystemClass::SystemClass()
 {
@@ -173,6 +173,10 @@ bool SystemClass::Frame()
 
 LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
+
+	if (TwEventWin(hwnd, umsg, wparam, lparam)) // send event message to AntTweakBar
+		return 0;
+
 	switch (umsg)
 	{
 		// Check if a key has been pressed on the keyboard.
@@ -265,7 +269,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	}
 
 	// Create the window with the screen settings and get the handle to it.
-	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName,
+	m_hwnd = CreateWindowEx(WS_EX_CLIENTEDGE, m_applicationName, m_applicationName,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
 		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, NULL);
 
@@ -275,7 +279,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	SetFocus(m_hwnd);
 
 	// Hide the mouse cursor.
-	ShowCursor(false);
+	ShowCursor(true);
 
 	return;
 }

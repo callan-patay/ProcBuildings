@@ -17,6 +17,7 @@
 #include "TextureShaderClass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
+#include <AntTweakBar.h>
 #include <vector>
 
 /////////////
@@ -40,7 +41,6 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame(float&);
-
 private:
 	bool Render();
 
@@ -52,6 +52,7 @@ private:
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 	ColorShaderClass* m_ColorShader;
+	bool makeModel = false;
 };
 
 #endif

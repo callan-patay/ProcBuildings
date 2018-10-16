@@ -402,11 +402,11 @@ void ModelClass::Tick(float& dt)
 
 
 	// Update the rotation variable each frame.
-	m_pitch += (float)XM_PI * dt / 2;
-	if (m_pitch > 360.0f)
-	{
-		m_pitch -= 360.0f;
-	}
+	//m_pitch += (float)XM_PI * dt / 2;
+	//if (m_pitch > 360.0f)
+	//{
+	//	m_pitch -= 360.0f;
+	//}
 
 
 
@@ -465,6 +465,10 @@ void ModelClass::createModel(vector<ModelType> data, vector<long> indices)
 
 	}
 
+	file << "mtllib House.mtl" << endl;
+
+	file << endl;
+
 
 	for (int i = 0; i < data.size(); i++)
 	{
@@ -484,14 +488,32 @@ void ModelClass::createModel(vector<ModelType> data, vector<long> indices)
 	}
 	file << endl;
 
-
+	file << "g House" << endl;
+	file << "usemtl House" << endl;
 
 	for (int i = 0; i < indices.size(); i += 3)
 	{
 		file << "f " + faces[i] + faces[i + 1] + faces[i + 2] << endl;
 	}
 
+	file.close();
 
+
+}
+
+float ModelClass::getRoll()
+{
+	return m_roll;
+}
+
+float ModelClass::getYaw()
+{
+	return m_yaw;
+}
+
+float ModelClass::getPitch()
+{
+	return m_pitch;
 }
 
 
