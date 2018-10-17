@@ -74,7 +74,7 @@
     <ProjectGuid>{BCECCE51-0769-4894-BC08-9D2D5F3F269F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DirectXAT</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -162,7 +162,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Users\calla\Documents\Visual Studio 2017\Projects\DirectXAT\ProcBuildings\DirectXAT\AntTweakBar\lib;D:\Users\calla\Documents\Visual Studio 2017\Projects\DirectXAT\ProcBuildings\DirectXAT\AntTweakBar\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\AntTweakBar\include;$(SolutionDir)\AntTweakBar\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

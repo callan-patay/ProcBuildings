@@ -27,6 +27,10 @@ GraphicsClass::~GraphicsClass()
 {
 }
 
+void TW_CALL GraphicsClass::Callback(void *clientData)
+{
+	m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+}
 
 bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
@@ -128,7 +132,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Initialize the light object.
-	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+	m_Light->SetAmbientColor(0.3f, 0.3f, 0.3f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 
@@ -145,11 +149,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Light G", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.y, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Light B", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.z, "Group='Light' min=0 max=1.0 step=0.05");
 
-	//TwAddVarRW(myBar, "Ambient R", TW_TYPE_FLOAT, &m_Light->m_ambientColor.x, "Group='Light' min=0 max=1.0 step=0.05");
-	//TwAddVarRW(myBar, "Ambient G", TW_TYPE_FLOAT, &m_Light->m_ambientColor.y, "Group='Light' min=0 max=1.0 step=0.05");
-	//TwAddVarRW(myBar, "Ambient B", TW_TYPE_FLOAT, &m_Light->m_ambientColor.z, "Group='Light' min=0 max=1.0 step=0.05");
-	
-	TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=a");
+	TwAddVarRW(myBar, "Ambient R", TW_TYPE_FLOAT, &m_Light->m_ambientColor.x, "Group='Light' min=0 max=1.0 step=0.05");
+	TwAddVarRW(myBar, "Ambient G", TW_TYPE_FLOAT, &m_Light->m_ambientColor.y, "Group='Light' min=0 max=1.0 step=0.05");
+	TwAddVarRW(myBar, "Ambient B", TW_TYPE_FLOAT, &m_Light->m_ambientColor.z, "Group='Light' min=0 max=1.0 step=0.05");
+	//TwAddButton(myBar, "Create Model", Callback, NULL, "label='Creates Model'");
+	TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
 	// Initialize the texture shader object.
 	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);

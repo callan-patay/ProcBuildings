@@ -2,8 +2,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: graphicsclass.h
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _GRAPHICSCLASS_H_
-#define _GRAPHICSCLASS_H_
+//#ifndef _GRAPHICSCLASS_H_
+//#define _GRAPHICSCLASS_H_
 
 
 //////////////
@@ -41,6 +41,7 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame(float&);
+	void TW_CALL Callback(void *clientData);
 private:
 	bool Render();
 
@@ -55,4 +56,4 @@ private:
 	bool makeModel = false;
 };
 
-#endif
+//#endif
