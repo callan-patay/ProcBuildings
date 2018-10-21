@@ -7,6 +7,8 @@ ModelClass::ModelClass()
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
 	m_Texture = 0;
+	m_Texture1 = 0;
+	m_Texture2 = 0;
 	m_worldMat = XMMatrixIdentity();
 	m_fudge = XMMatrixIdentity();
 }
@@ -30,7 +32,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	{
 		return false;
 	}
-
+	TextureType = Texture::HOUSE;
 	// Initialize the vertex and index buffer that hold the geometry for the triangle.
 	result = InitializeBuffers(device);
 	if (!result)
@@ -199,7 +201,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	return true;
 }
 
-vector<ModelClass::ModelType> ModelClass::GetModel()
+vector<ModelType> ModelClass::GetModel()
 {
 	return m_model;
 }
@@ -433,73 +435,7 @@ void ModelClass::Tick(float& dt)
 
 }
 
-void ModelClass::createModel(vector<ModelType> data, vector<long> indices)
-{
-	ofstream file("House.obj");
 
-	vector<string> positions, texCords, normals, faces;
-
-
-
-	for (int i = 0; i < data.size(); i++)
-	{
-		positions.push_back("v " + to_string(data[i].x)
-			+ " " + to_string(data[i].y) + " "
-			+ to_string(data[i].z));
-
-
-		texCords.push_back("vt " + to_string(data[i].tu)
-			+ " " + to_string(data[i].tu));
-
-		normals.push_back("vn " + to_string(data[i].nx)
-			+ " " + to_string(data[i].ny)
-			+ " " + to_string(data[i].nz));
-
-
-
-	}
-
-	for (int i = 0; i < indices.size(); i++)
-	{
-		faces.push_back(to_string(indices[i] + 1) + "/" + to_string(indices[i] + 1) + "/" + to_string(indices[i] + 1) + " ");
-
-	}
-
-	file << "mtllib House.mtl" << endl;
-
-	file << endl;
-
-
-	for (int i = 0; i < data.size(); i++)
-	{
-		file << positions[i] << endl;
-	}
-	file << endl;
-
-	for (int i = 0; i < data.size(); i++)
-	{
-		file << texCords[i] << endl;
-	}
-	file << endl;
-
-	for (int i = 0; i < data.size(); i++)
-	{
-		file << normals[i] << endl;
-	}
-	file << endl;
-
-	file << "g House" << endl;
-	file << "usemtl House" << endl;
-
-	for (int i = 0; i < indices.size(); i += 3)
-	{
-		file << "f " + faces[i] + faces[i + 1] + faces[i + 2] << endl;
-	}
-
-	file.close();
-
-
-}
 
 float ModelClass::getRoll()
 {

@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 #include "TextureClass.h"
+#include "ObjExporter.h"
 
 
 
@@ -29,7 +30,9 @@ GraphicsClass::~GraphicsClass()
 
 void TW_CALL GraphicsClass::Callback(void *clientData)
 {
-	m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+	ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+
+	
 }
 
 bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
@@ -228,7 +231,8 @@ bool GraphicsClass::Frame(float& dt)
 
 	if (makeModel)
 	{
-		m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+		//m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+		ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
 		makeModel = false;
 	}
 

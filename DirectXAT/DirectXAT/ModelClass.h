@@ -24,6 +24,19 @@ using namespace DirectX;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: ModelClass
 ////////////////////////////////////////////////////////////////////////////////
+	struct ModelType
+	{
+		float x, y, z;
+		float tu, tv;
+		float nx, ny, nz;
+	};
+
+	enum Texture
+	{
+		HOUSE,
+		BRICK,
+		MARBLE
+	};
 class ModelClass
 {
 private:
@@ -38,12 +51,6 @@ private:
 
 
 public:
-	struct ModelType
-	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
-	};
 
 
 
@@ -64,7 +71,6 @@ public:
 	XMMATRIX getWorldMat();
 	void setPosition(float, float, float);
 	void Tick(float&);
-	void createModel(vector<ModelType> data, vector<long> indices);
 	float getRoll();
 	float getYaw();
 	float getPitch();
@@ -74,6 +80,7 @@ public:
 	XMFLOAT3 m_pos, m_scale;
 	vector<ModelType> GetModel();
 	vector<long> GetIndices();
+	Texture TextureType;
 private:
 	void ShutdownBuffers();
 	void ReleaseTexture();
@@ -83,8 +90,8 @@ private:
 	int m_vertexCount, m_indexCount;
 	unsigned long* indices;
 	vector<long> indicesVector;
-	TextureClass* m_Texture;
-	vector<ModelClass::ModelType> m_model;
+	TextureClass* m_Texture, *m_Texture1, *m_Texture2;
+	vector<ModelType> m_model;
 	XMMATRIX m_worldMat, m_fudge;
 	
 
