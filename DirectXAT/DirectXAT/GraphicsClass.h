@@ -17,6 +17,7 @@
 #include "TextureShaderClass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
+#include "ObjExporter.h"
 #include <AntTweakBar.h>
 #include <vector>
 
@@ -41,7 +42,8 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame(float&);
-	void TW_CALL Callback(void *clientData);
+	//static void TW_CALL Callback(void *clientData);
+	void makeBuilding();
 private:
 	bool Render();
 
@@ -56,4 +58,14 @@ private:
 	bool makeModel = false;
 };
 
+static void TW_CALL MakeModel(void *clientData)
+{
+
+	auto creater = static_cast<GraphicsClass*>(clientData);
+
+
+	creater->makeBuilding();
+
+
+}
 //#endif

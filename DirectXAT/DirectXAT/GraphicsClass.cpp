@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 #include "TextureClass.h"
-#include "ObjExporter.h"
+
 
 
 
@@ -28,12 +28,12 @@ GraphicsClass::~GraphicsClass()
 {
 }
 
-void TW_CALL GraphicsClass::Callback(void *clientData)
-{
-	ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
-
-	
-}
+//static void TW_CALL GraphicsClass::Callback(void *clientData)
+//{
+//	ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+//
+//	
+//}
 
 bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
@@ -155,8 +155,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Ambient R", TW_TYPE_FLOAT, &m_Light->m_ambientColor.x, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Ambient G", TW_TYPE_FLOAT, &m_Light->m_ambientColor.y, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Ambient B", TW_TYPE_FLOAT, &m_Light->m_ambientColor.z, "Group='Light' min=0 max=1.0 step=0.05");
-	//TwAddButton(myBar, "Create Model", Callback, NULL, "label='Creates Model'");
-	TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
+	TwAddButton(myBar, "Create Model", MakeModel, this, "Group='Create' label='Creates Model'");
+	//TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
 	// Initialize the texture shader object.
 	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
@@ -229,12 +229,12 @@ bool GraphicsClass::Frame(float& dt)
 	// Render the graphics scene.
 
 
-	if (makeModel)
-	{
-		//m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
-		ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
-		makeModel = false;
-	}
+	//if (makeModel)
+	//{
+	//	//m_Models[0]->createModel(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+	//	ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+	//	makeModel = false;
+	//}
 
 
 
@@ -253,6 +253,11 @@ bool GraphicsClass::Frame(float& dt)
 		return false;
 	}
 	return true;
+}
+
+void GraphicsClass::makeBuilding()
+{
+	ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
 }
 
 
