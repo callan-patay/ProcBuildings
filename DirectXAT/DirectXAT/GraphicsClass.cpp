@@ -257,7 +257,7 @@ bool GraphicsClass::Frame(float& dt)
 
 void GraphicsClass::makeBuilding()
 {
-	ObjExporter::Create(m_Models[0]->GetModel(), m_Models[0]->GetIndices());
+	ObjExporter::Create(m_Models);
 }
 
 
