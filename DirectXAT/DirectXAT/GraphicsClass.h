@@ -1,9 +1,8 @@
-#pragma once
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: graphicsclass.h
 ////////////////////////////////////////////////////////////////////////////////
-//#ifndef _GRAPHICSCLASS_H_
-//#define _GRAPHICSCLASS_H_
+#ifndef _GRAPHICSCLASS_H_
+#define _GRAPHICSCLASS_H_
 
 
 //////////////
@@ -44,6 +43,8 @@ public:
 	bool Frame(float&);
 	//static void TW_CALL Callback(void *clientData);
 	void makeBuilding();
+	void addBase();
+	void addRoof();
 private:
 	bool Render();
 
@@ -66,6 +67,22 @@ static void TW_CALL MakeModel(void *clientData)
 
 	creater->makeBuilding();
 
-
 }
-//#endif
+
+static void TW_CALL AddBase(void *clientData)
+{
+
+	auto base = static_cast<GraphicsClass*>(clientData);
+	base->addBase();
+}
+
+static void TW_CALL AddRoof(void *clientData)
+{
+	auto roof = static_cast<GraphicsClass*>(clientData);
+	roof->addRoof();
+}
+
+
+
+
+#endif

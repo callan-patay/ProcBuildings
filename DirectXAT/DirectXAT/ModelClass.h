@@ -58,7 +58,7 @@ public:
 	ModelClass();
 	ModelClass(const ModelClass&);
 	~ModelClass();	
-	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*, char*);
+	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*, char*, int);
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 	void SetTexture(TextureClass*);
@@ -69,6 +69,7 @@ public:
 	bool LoadModel(char*);
 	void ReleaseModel();
 	XMMATRIX getWorldMat();
+	XMMATRIX getTransMat();
 	void setPosition(float, float, float);
 	void Tick(float&);
 	float getRoll();
@@ -92,7 +93,9 @@ private:
 	vector<long> indicesVector;
 	TextureClass* m_Texture, *m_Texture1, *m_Texture2;
 	vector<ModelType> m_model;
+	XMVECTOR posVec, rotVec, scaleVec, originVec;
 	XMMATRIX m_worldMat, m_fudge;
+	XMMATRIX transMat;
 	
 
 

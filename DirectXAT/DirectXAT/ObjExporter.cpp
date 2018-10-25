@@ -11,35 +11,49 @@ using namespace DirectX;
 void ObjExporter::Create(vector<ModelClass*> data)
 {
 	
+		ofstream file("House.obj");
+		ofstream mtlfile("House.mtl");
+		file << "mtllib House.mtl" << endl;
+		long lastface = 0;
 	for (int i = 0; i < data.size(); i++)
 	{
 
-		ofstream file("House.obj");
 
 		vector<string> positions, texCords, normals, faces;
 
-
-		vector<XMVECTOR> pos;
-		pos.reserve(data[i]->GetModel().size());
-		for (int p = 0; p < pos.size(); i++)
+		vector<XMFLOAT3> pos3;
+		pos3.reserve(data[i]->GetModel().size());
+		for (int p = 0; p < data[i]->GetModel().size(); p++)
 		{
-			pos[p] = XMVectorSet(data[i]->GetModel()[p].x, data[i]->GetModel()[p].y, data[i]->GetModel()[p].z, 1.0f);
-			pos[p] = XMVector3Transform(pos[p], data[i]->getWorldMat());
+			XMVECTOR tempposVec;
+			FXMVECTOR tempposVec2 = XMVectorSet(data[i]->GetModel()[p].x, data[i]->GetModel()[p].y, data[i]->GetModel()[p].z, 1.0f);
+		
+			tempposVec = XMVector3Transform(tempposVec2, data[i]->getWorldMat());
 
+
+
+			XMFLOAT3 temppos;
+
+			temppos.x = XMVectorGetByIndex(tempposVec,0);
+			temppos.y = XMVectorGetByIndex(tempposVec, 1);
+			temppos.z = XMVectorGetByIndex(tempposVec, 2);
+
+
+			pos3.push_back(temppos);
 			
 
-			//pos[p] = XMFLOAT3(data[i]->GetModel()[p].x, data[i]->GetModel()[p].y, data[i]->GetModel()[p].z) * data[i]->getWorldMat();
+
 		}
 
-		XMFLOAT3 position;
+
 
 		
 
 		for (int p = 0; p < data[i]->GetModel().size(); p++)
 		{
-			positions.push_back("v " + to_string(data[i]->GetModel()[p].x)
-				+ " " + to_string(data[i]->GetModel()[p].y) + " "
-				+ to_string(data[i]->GetModel()[p].z));
+			positions.push_back("v " + to_string(pos3[p].x)
+				+ " " + to_string(pos3[p].y) + " "
+				+ to_string(pos3[p].z));
 
 
 			texCords.push_back("vt " + to_string(data[i]->GetModel()[p].tu)
@@ -55,47 +69,43 @@ void ObjExporter::Create(vector<ModelClass*> data)
 
 		for (int p = 0;  p < data[i]->GetIndices().size(); p++)
 		{
-			faces.push_back(to_string(data[i]->GetIndices()[p] + 1) + "/" + to_string(data[i]->GetIndices()[p] + 1) + "/" + to_string(data[i]->GetIndices()[p] + 1) + " ");
+			faces.push_back(to_string(data[i]->GetIndices()[p] + 1 + lastface) + "/" + to_string(data[i]->GetIndices()[p] + 1) + "/" + to_string(data[i]->GetIndices()[p] + 1) + " ");
 
 		}
 
-		file << "mtllib House.mtl" << endl;
-
-		file << endl;
-
+		file << "g default" << endl;
 
 		for (int p = 0; p < positions.size(); p++)
 		{
+			
 			file << positions[p] << endl;
 		}
-		file << endl;
+	
 
 		for (int p = 0; p < texCords.size(); p++)
 		{
 			file << texCords[p] << endl;
 		}
-		file << endl;
+	
 
 		for (int p = 0; p < normals.size(); p++)
 		{
 			file << normals[p] << endl;
 		}
-		file << endl;
 
-		file << "g House" << endl;
+		file << "g House "<< i << endl;
 		file << "usemtl House" << endl;
 
 		for (int p = 0; p < data[i]->GetIndices().size(); p += 3)
 		{
 			file << "f " + faces[p] + faces[p + 1] + faces[p + 2] << endl;
+			lastface = data[i]->GetIndices()[p];
 		}
 
-		file.close();
 
 
 
-		ofstream mtlfile("House.mtl");
-
+	}
 		mtlfile << "newmtl House" << endl;
 		mtlfile << "d 1" << endl;
 		mtlfile << "illum 1" << endl;
@@ -106,6 +116,6 @@ void ObjExporter::Create(vector<ModelClass*> data)
 
 		mtlfile.close();
 
-	}
+		file.close();
 
 }

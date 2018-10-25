@@ -1,5 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "modelclass.h"
+#include <AntTweakBar.h>
+#include <sstream>
 #include <string>;
 
 ModelClass::ModelClass()
@@ -23,9 +25,44 @@ ModelClass::~ModelClass()
 {
 }
 
-bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, char* modelFilename)
+bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, char* modelFilename, int modelNum)
 {
 	bool result;
+
+
+	TwInit(TW_DIRECT3D11, device);
+	TwWindowSize(900, 900);
+
+
+	std::stringstream strs;
+	strs << "Model " << modelNum;
+
+	std::string barname = strs.str();
+
+	TwBar *myBar;
+	myBar = TwNewBar(barname.c_str() );
+	int barSize[2] = { 250, 250 };
+	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
+
+
+	TwEnumVal TextureTypeEV[] = { {BRICK, "Brick"}, {HOUSE, "House"}, {MARBLE, "Marble"} };
+	TwType TextureTypeTw = TwDefineEnum("TextureType", TextureTypeEV, 3);
+	TwAddVarRW(myBar, "Texture", TextureTypeTw, &TextureType, NULL);
+	TwAddVarRW(myBar, "Roll", TW_TYPE_FLOAT, &m_roll, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
+	TwAddVarRW(myBar, "Pitch", TW_TYPE_FLOAT,&m_pitch, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
+	TwAddVarRW(myBar, "Yaw", TW_TYPE_FLOAT, &m_yaw, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
+
+	TwAddVarRW(myBar, "X", TW_TYPE_FLOAT, &m_pos.x, "Group='Position' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "Y", TW_TYPE_FLOAT, &m_pos.y, "Group='Position' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "Z", TW_TYPE_FLOAT, &m_pos.z, "Group='Position' min=-100 max=100 step=0.1");
+
+	TwAddVarRW(myBar, "scale X", TW_TYPE_FLOAT, &m_scale.x, "Group='Scale' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "scale Y", TW_TYPE_FLOAT, &m_scale.y, "Group='Scale' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "scale Z", TW_TYPE_FLOAT, &m_scale.z, "Group='Scale' min=-100 max=100 step=0.1");
+
+
+
+
 	// Load in the model data,
 	result = LoadModel(modelFilename);
 	if (!result)
@@ -83,6 +120,7 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
+	TwDraw();
 
 	return;
 }
@@ -99,7 +137,18 @@ int ModelClass::GetIndexCount()
 
 ID3D11ShaderResourceView* ModelClass::GetTexture()
 {
-	return m_Texture->GetTexture();
+	if (TextureType == Texture::HOUSE)
+	{
+		return m_Texture->GetTexture();
+	}
+	if (TextureType == Texture::BRICK)
+	{
+		return m_Texture1->GetTexture();
+	}
+	if (TextureType == Texture::MARBLE)
+	{
+		return m_Texture2->GetTexture();
+	}
 }
 
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
@@ -227,6 +276,9 @@ void ModelClass::ShutdownBuffers()
 		m_vertexBuffer = 0;
 	}
 
+
+	TwTerminate();
+
 	return;
 }
 
@@ -271,6 +323,37 @@ bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 		return false;
 	}
 
+
+
+
+	m_Texture = new TextureClass;
+	if (!m_Texture)
+	{
+		return false;
+	}
+
+	// Initialize the texture object.
+	result = m_Texture->Initialize(device, deviceContext, filename);
+	if (!result)
+	{
+		return false;
+	}
+
+
+	m_Texture1 = new TextureClass;
+	if (!m_Texture)
+	{
+		return false;
+	}
+
+	// Initialize the texture object.
+	result = m_Texture1->Initialize(device, deviceContext, "../DirectXAT/kerrigan.tga");
+	if (!result)
+	{
+		return false;
+	}
+
+
 	return true;
 }
 
@@ -283,7 +366,18 @@ void ModelClass::ReleaseTexture()
 		delete m_Texture;
 		m_Texture = 0;
 	}
-
+	if (m_Texture1)
+	{
+		m_Texture1->Shutdown();
+		delete m_Texture1;
+		m_Texture1 = 0;
+	}
+	if (m_Texture2)
+	{
+		m_Texture2->Shutdown();
+		delete m_Texture2;
+		m_Texture2 = 0;
+	}
 	return;
 }
 
@@ -371,6 +465,11 @@ XMMATRIX ModelClass::getWorldMat()
 	return m_worldMat;
 }
 
+XMMATRIX ModelClass::getTransMat()
+{
+	return transMat;
+}
+
 void ModelClass::setPosition(float x, float y, float z)
 {
 	m_pos.x = x;
@@ -426,10 +525,17 @@ void ModelClass::Tick(float& dt)
 	XMMATRIX scaleMat = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotMat = XMMatrixRotationRollPitchYaw(m_roll, m_pitch, m_yaw);
 
-	XMMATRIX transMat = XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
+	transMat = XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
+	
+	posVec = XMVectorSet(m_pos.x, m_pos.y, m_pos.z, 1.0f);
+	scaleVec = XMVectorSet(m_scale.x, m_scale.y, m_scale.z, 1.0f);
+	rotVec = XMVectorSet(m_roll, m_pitch, m_yaw, 0.0f);
+	originVec = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
 
-	m_worldMat = m_fudge * scaleMat* rotMat*  transMat;
+	//m_worldMat = XMMatrixAffineTransformation(scaleVec, { 0.0f, 0.0f, 0.0f, 0.0f }, rotVec, posVec);
+
+	m_worldMat = m_fudge *scaleMat* rotMat*  transMat;
 
 
 

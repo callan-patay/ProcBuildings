@@ -73,27 +73,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	int posX = 0;
-	int posY = 0;
-
-	int row = 1;
-	int col = 1;
-
-
-	for (int r = 0; r < row; r++)
-	{
-		for (int c = 0; c < col; c++)
-		{
-			ModelClass* m_Model = new ModelClass();
-			// Initialize the model objct.
-			m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/House.tga", "../DirectXAT/cube.txt");
-			m_Model->setPosition(posX, posY, 0.0f);
-			m_Models.push_back(m_Model);
-			posY += 5;
-		}
-		posY = 0;
-		posX += 5;
-	}
+	ModelClass* m_Model = new ModelClass();
+	// Initialize the model objct.
+	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/House.tga", "../DirectXAT/cube.txt", 1);
+			
+	m_Models.push_back(m_Model);
 
 	
 
@@ -107,8 +91,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 
 	TwBar *myBar;
-	myBar = TwNewBar("Model");
-	int barSize[2] = { 250, 550 };
+	myBar = TwNewBar("Menu");
+	int barSize[2] = { 250, 250 };
 	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
 
@@ -139,13 +123,17 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 
-	TwAddVarRW(myBar, "Roll", TW_TYPE_FLOAT, &m_Models[0]->m_roll, "Group='Rotation' min=0 max=360 step=0.1");
-	TwAddVarRW(myBar, "Pitch", TW_TYPE_FLOAT, &m_Models[0]->m_pitch, "Group='Rotation' min=0 max=360 step=0.1");
-	TwAddVarRW(myBar, "Yaw", TW_TYPE_FLOAT, &m_Models[0]->m_yaw, "Group='Rotation' min=0 max=360 step=0.1");
+	//TwAddVarRW(myBar, "Roll", TW_TYPE_FLOAT, &m_Models[0]->m_roll, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
+	//TwAddVarRW(myBar, "Pitch", TW_TYPE_FLOAT, &m_Models[0]->m_pitch, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
+	//TwAddVarRW(myBar, "Yaw", TW_TYPE_FLOAT, &m_Models[0]->m_yaw, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
 
-	TwAddVarRW(myBar, "X", TW_TYPE_FLOAT, &m_Models[0]->m_pos.x, "Group='Position' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "Y", TW_TYPE_FLOAT, &m_Models[0]->m_pos.y, "Group='Position' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "Z", TW_TYPE_FLOAT, &m_Models[0]->m_pos.z, "Group='Position' min=-100 max=100 step=0.1");
+	//TwAddVarRW(myBar, "X", TW_TYPE_FLOAT, &m_Models[0]->m_pos.x, "Group='Position' min=-100 max=100 step=0.1");
+	//TwAddVarRW(myBar, "Y", TW_TYPE_FLOAT, &m_Models[0]->m_pos.y, "Group='Position' min=-100 max=100 step=0.1");
+	//TwAddVarRW(myBar, "Z", TW_TYPE_FLOAT, &m_Models[0]->m_pos.z, "Group='Position' min=-100 max=100 step=0.1");
+
+	//TwAddVarRW(myBar, "scale X", TW_TYPE_FLOAT, &m_Models[0]->m_scale.x, "Group='Scale' min=-100 max=100 step=0.1");
+	//TwAddVarRW(myBar, "scale Y", TW_TYPE_FLOAT, &m_Models[0]->m_scale.y, "Group='Scale' min=-100 max=100 step=0.1");
+	//TwAddVarRW(myBar, "scale Z", TW_TYPE_FLOAT, &m_Models[0]->m_scale.z, "Group='Scale' min=-100 max=100 step=0.1");
 
 	TwAddVarRW(myBar, "Direction", TW_TYPE_DIR3F, &m_Light->m_direction, "Group='Light' opened=true axisz=-z showval=false");
 	TwAddVarRW(myBar, "Light R", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.x, "Group='Light' min=0 max=1.0 step=0.05");
@@ -155,7 +143,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Ambient R", TW_TYPE_FLOAT, &m_Light->m_ambientColor.x, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Ambient G", TW_TYPE_FLOAT, &m_Light->m_ambientColor.y, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Ambient B", TW_TYPE_FLOAT, &m_Light->m_ambientColor.z, "Group='Light' min=0 max=1.0 step=0.05");
-	TwAddButton(myBar, "Create Model", MakeModel, this, "Group='Create' label='Creates Model'");
+	TwAddButton(myBar, "Add Base", AddBase, this, "Group='Create' label='Adds a Base'");
+	TwAddButton(myBar, "Add Roof", AddRoof, this, "Group='Create' label='Adds a Roof'");
+	TwAddButton(myBar, "Export", MakeModel, this, "Group='Create' label='Creates Model'");
 	//TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
 	// Initialize the texture shader object.
@@ -258,6 +248,24 @@ bool GraphicsClass::Frame(float& dt)
 void GraphicsClass::makeBuilding()
 {
 	ObjExporter::Create(m_Models);
+}
+
+void GraphicsClass::addBase()
+{
+	ModelClass* m_Model = new ModelClass();
+	// Initialize the model objct.
+	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/House.tga", "../DirectXAT/cube.txt", m_Models.size()+1);
+	//m_Model->setPosition(posX, posY, 0.0f);
+	m_Models.push_back(m_Model);
+}
+
+void GraphicsClass::addRoof()
+{
+	ModelClass* m_Model = new ModelClass();
+	// Initialize the model objct.
+	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/House.tga", "../DirectXAT/roof.txt", m_Models.size() + 1);
+	//m_Model->setPosition(posX, posY, 0.0f);
+	m_Models.push_back(m_Model);
 }
 
 
