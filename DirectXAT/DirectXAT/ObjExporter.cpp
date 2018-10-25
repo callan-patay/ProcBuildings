@@ -69,7 +69,7 @@ void ObjExporter::Create(vector<ModelClass*> data)
 
 		for (int p = 0;  p < data[i]->GetIndices().size(); p++)
 		{
-			faces.push_back(to_string(data[i]->GetIndices()[p] + 1 + lastface) + "/" + to_string(data[i]->GetIndices()[p] + 1) + "/" + to_string(data[i]->GetIndices()[p] + 1) + " ");
+			faces.push_back(to_string(data[i]->GetIndices()[p] + 1 + lastface) + "/" + to_string(data[i]->GetIndices()[p] + 1 + lastface) + "/" + to_string(data[i]->GetIndices()[p] + 1 + lastface) + " ");
 
 		}
 
@@ -99,10 +99,10 @@ void ObjExporter::Create(vector<ModelClass*> data)
 		for (int p = 0; p < data[i]->GetIndices().size(); p += 3)
 		{
 			file << "f " + faces[p] + faces[p + 1] + faces[p + 2] << endl;
-			lastface = data[i]->GetIndices()[p];
 		}
 
 
+			lastface += data[i]->GetIndices()[data[i]->GetIndices().size()- 1] + 1;
 
 
 	}
