@@ -11,6 +11,7 @@ ModelClass::ModelClass()
 	m_Texture = 0;
 	m_Texture1 = 0;
 	m_Texture2 = 0;
+	m_Texture3 = 0;
 	m_worldMat = XMMatrixIdentity();
 	m_fudge = XMMatrixIdentity();
 }
@@ -31,7 +32,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 
 
 	TwInit(TW_DIRECT3D11, device);
-	TwWindowSize(900, 900);
+	TwWindowSize(800, 600);
 
 
 	std::stringstream strs;
@@ -41,12 +42,12 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 
 	TwBar *myBar;
 	myBar = TwNewBar(barname.c_str() );
-	int barSize[2] = { 250, 250 };
+	int barSize[2] = { 150, 100 };
 	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
 
-	TwEnumVal TextureTypeEV[] = { {BRICK, "Brick"}, {HOUSE, "House"}, {MARBLE, "Marble"} };
-	TwType TextureTypeTw = TwDefineEnum("TextureType", TextureTypeEV, 3);
+	TwEnumVal TextureTypeEV[] = { {BRICK, "Brick"}, {HOUSE, "House"}, {WOOD, "Wood"}, {SKYSCRAPER, "Skyscraper"} };
+	TwType TextureTypeTw = TwDefineEnum("TextureType", TextureTypeEV, 4);
 	TwAddVarRW(myBar, "Texture", TextureTypeTw, &TextureType, NULL);
 	TwAddVarRW(myBar, "Roll", TW_TYPE_FLOAT, &m_roll, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
 	TwAddVarRW(myBar, "Pitch", TW_TYPE_FLOAT,&m_pitch, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
@@ -145,10 +146,17 @@ ID3D11ShaderResourceView* ModelClass::GetTexture()
 	{
 		return m_Texture1->GetTexture();
 	}
-	if (TextureType == Texture::MARBLE)
+	if (TextureType == Texture::WOOD)
 	{
 		return m_Texture2->GetTexture();
 	}
+	if (TextureType == Texture::SKYSCRAPER)
+	{
+		return m_Texture3->GetTexture();
+	}
+
+
+
 }
 
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
@@ -186,16 +194,6 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		indices[i] = i;
 		indicesVector.push_back(indices[i]);
 	}
-
-
-	// Load the index array with data.
-	indices[0] = 0;  // Bottom left.
-	indices[1] = 1;  // Top middle.
-	indices[2] = 2;  // Bottom right.
-
-
-
-
 
 
 
@@ -310,20 +308,6 @@ bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 
 
 	// Create the texture object.
-	m_Texture = new TextureClass;
-	if (!m_Texture)
-	{
-		return false;
-	}
-
-	// Initialize the texture object.
-	result = m_Texture->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-
 
 
 	m_Texture = new TextureClass;
@@ -341,17 +325,45 @@ bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 
 
 	m_Texture1 = new TextureClass;
-	if (!m_Texture)
+	if (!m_Texture1)
 	{
 		return false;
 	}
 
 	// Initialize the texture object.
-	result = m_Texture1->Initialize(device, deviceContext, "../DirectXAT/kerrigan.tga");
+	result = m_Texture1->Initialize(device, deviceContext, "../DirectXAT/Exports/brick.tga");
 	if (!result)
 	{
 		return false;
 	}
+
+	m_Texture2= new TextureClass;
+	if (!m_Texture2)
+	{
+		return false;
+	}
+
+	// Initialize the texture object.
+	result = m_Texture2->Initialize(device, deviceContext, "../DirectXAT/Exports/Wood.tga");
+	if (!result)
+	{
+		return false;
+	}
+
+
+	m_Texture3 = new TextureClass;
+	if (!m_Texture3)
+	{
+		return false;
+	}
+
+	// Initialize the texture object.
+	result = m_Texture3->Initialize(device, deviceContext, "../DirectXAT/Exports/Skyscraper.tga");
+	if (!result)
+	{
+		return false;
+	}
+
 
 
 	return true;
@@ -377,6 +389,12 @@ void ModelClass::ReleaseTexture()
 		m_Texture2->Shutdown();
 		delete m_Texture2;
 		m_Texture2 = 0;
+	}
+	if (m_Texture3)
+	{
+		m_Texture3->Shutdown();
+		delete m_Texture3;
+		m_Texture3 = 0;
 	}
 	return;
 }
@@ -479,47 +497,6 @@ void ModelClass::setPosition(float x, float y, float z)
 
 void ModelClass::Tick(float& dt)
 {
-	//static bool limitReached = true;
-
-	//if (!limitReached && m_scale.y <= 2.0f)
-	//{
-	//	m_scale.y += 1.0f * dt;
-	//}
-	//else
-	//{
-	//	limitReached = true;
-	//}
-
-	//if (limitReached && m_scale.y >= 1.0f)
-	//{
-	//	m_scale.y -= 1.0f * dt;
-	//}
-	//else
-	//{
-	//	limitReached = false;
-	//}
-
-
-
-
-	// Update the rotation variable each frame.
-	//m_pitch += (float)XM_PI * dt / 2;
-	//if (m_pitch > 360.0f)
-	//{
-	//	m_pitch -= 360.0f;
-	//}
-
-
-
-	//m_pitch = 45.0f;
-	////m_roll = 45.0f;
-	//m_yaw = 45.0f;
-
-	//m_roll += (float)XM_PI * dt;
-	//if (m_roll > 360.0f)
-	//{
-	//	m_roll -= 360.0f;
-	//}
 
 
 	XMMATRIX scaleMat = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
@@ -527,13 +504,7 @@ void ModelClass::Tick(float& dt)
 
 	transMat = XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
 	
-	posVec = XMVectorSet(m_pos.x, m_pos.y, m_pos.z, 1.0f);
-	scaleVec = XMVectorSet(m_scale.x, m_scale.y, m_scale.z, 1.0f);
-	rotVec = XMVectorSet(m_roll, m_pitch, m_yaw, 0.0f);
-	originVec = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
-
-	//m_worldMat = XMMatrixAffineTransformation(scaleVec, { 0.0f, 0.0f, 0.0f, 0.0f }, rotVec, posVec);
 
 	m_worldMat = m_fudge *scaleMat* rotMat*  transMat;
 
@@ -556,6 +527,11 @@ float ModelClass::getYaw()
 float ModelClass::getPitch()
 {
 	return m_pitch;
+}
+
+Texture ModelClass::getTextureType()
+{
+	return TextureType;
 }
 
 

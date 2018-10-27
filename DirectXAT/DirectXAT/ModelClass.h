@@ -35,7 +35,8 @@ using namespace DirectX;
 	{
 		HOUSE,
 		BRICK,
-		MARBLE
+		WOOD,
+		SKYSCRAPER
 	};
 class ModelClass
 {
@@ -75,6 +76,8 @@ public:
 	float getRoll();
 	float getYaw();
 	float getPitch();
+	Texture getTextureType();
+
 
 	float m_roll;
 	float m_pitch, m_yaw;
@@ -91,9 +94,8 @@ private:
 	int m_vertexCount, m_indexCount;
 	unsigned long* indices;
 	vector<long> indicesVector;
-	TextureClass* m_Texture, *m_Texture1, *m_Texture2;
+	TextureClass* m_Texture, *m_Texture1, *m_Texture2, *m_Texture3;
 	vector<ModelType> m_model;
-	XMVECTOR posVec, rotVec, scaleVec, originVec;
 	XMMATRIX m_worldMat, m_fudge;
 	XMMATRIX transMat;
 	

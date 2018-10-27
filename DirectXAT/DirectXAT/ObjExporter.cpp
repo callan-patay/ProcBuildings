@@ -11,8 +11,8 @@ using namespace DirectX;
 void ObjExporter::Create(vector<ModelClass*> data)
 {
 	
-		ofstream file("House.obj");
-		ofstream mtlfile("House.mtl");
+		ofstream file("Exports/House.obj");
+		ofstream mtlfile("Exports/House.mtl");
 		file << "mtllib House.mtl" << endl;
 		long lastface = 0;
 	for (int i = 0; i < data.size(); i++)
@@ -93,8 +93,33 @@ void ObjExporter::Create(vector<ModelClass*> data)
 			file << normals[p] << endl;
 		}
 
-		file << "g House "<< i << endl;
-		file << "usemtl House" << endl;
+			file << "g House " << i << endl;
+		switch (data[i]->getTextureType())
+		{
+		case Texture::BRICK:
+		{
+
+			file << "usemtl Brick" << endl;
+			break;
+		}
+
+		case Texture::HOUSE:
+		{
+			file << "usemtl House" << endl;
+			break;
+		}
+		case Texture::WOOD:
+		{
+			file << "usemtl Wood" << endl;
+			break;
+		}
+		case Texture::SKYSCRAPER:
+		{
+			file << "usemtl Skyscraper" << endl;
+			break;
+		}
+			
+		}
 
 		for (int p = 0; p < data[i]->GetIndices().size(); p += 3)
 		{
@@ -113,6 +138,30 @@ void ObjExporter::Create(vector<ModelClass*> data)
 		mtlfile << "Kd 1.000 1.000 1.000" << endl;
 		mtlfile << "map_Kd House.tga" << endl;
 		mtlfile << "map_Ka House.tga" << endl;
+
+		mtlfile << "newmtl Brick" << endl;
+		mtlfile << "d 1" << endl;
+		mtlfile << "illum 1" << endl;
+		mtlfile << "Ka 1.000 1.000 1.000" << endl;
+		mtlfile << "Kd 1.000 1.000 1.000" << endl;
+		mtlfile << "map_Kd brick.tga" << endl;
+		mtlfile << "map_Ka brick.tga" << endl;
+
+		mtlfile << "newmtl Wood" << endl;
+		mtlfile << "d 1" << endl;
+		mtlfile << "illum 1" << endl;
+		mtlfile << "Ka 1.000 1.000 1.000" << endl;
+		mtlfile << "Kd 1.000 1.000 1.000" << endl;
+		mtlfile << "map_Kd Wood.tga" << endl;
+		mtlfile << "map_Ka Wood.tga" << endl;
+
+		mtlfile << "newmtl Skyscraper" << endl;
+		mtlfile << "d 1" << endl;
+		mtlfile << "illum 1" << endl;
+		mtlfile << "Ka 1.000 1.000 1.000" << endl;
+		mtlfile << "Kd 1.000 1.000 1.000" << endl;
+		mtlfile << "map_Kd Skyscraper.tga" << endl;
+		mtlfile << "map_Ka Skyscraper.tga" << endl;
 
 		mtlfile.close();
 

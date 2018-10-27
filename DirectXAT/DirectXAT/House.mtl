@@ -5,3 +5,24 @@ Ka 1.000 1.000 1.000
 Kd 1.000 1.000 1.000
 map_Kd House.tga
 map_Ka House.tga
+newmtl Brick
+d 1
+illum 1
+Ka 1.000 1.000 1.000
+Kd 1.000 1.000 1.000
+map_Kd brick.tga
+map_Ka brick.tga
+newmtl Wood
+d 1
+illum 1
+Ka 1.000 1.000 1.000
+Kd 1.000 1.000 1.000
+map_Kd Wood.tga
+map_Ka Wood.tga
+newmtl Skyscraper
+d 1
+illum 1
+Ka 1.000 1.000 1.000
+Kd 1.000 1.000 1.000
+map_Kd Skyscraper.tga
+map_Ka Skyscraper.tga

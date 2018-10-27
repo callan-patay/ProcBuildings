@@ -126,19 +126,16 @@
     <Image Include="z.dds">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="brick.tga">
+    <Image Include="Exports\Brick.tga">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="brick-texture-png-0.png">
+    <Image Include="Exports\House.tga">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="kerrigan.tga">
+    <Image Include="Exports\Skyscraper.tga">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="stone01.tga">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="House.tga">
+    <Image Include="Exports\Wood.tga">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
