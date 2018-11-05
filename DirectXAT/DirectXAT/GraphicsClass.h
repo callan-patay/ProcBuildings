@@ -16,6 +16,7 @@
 #include "TextureShaderClass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
+#include "House.h"
 #include "ObjExporter.h"
 #include <AntTweakBar.h>
 #include <vector>
@@ -43,7 +44,7 @@ public:
 	bool Frame(float&);
 	//static void TW_CALL Callback(void *clientData);
 	void makeBuilding();
-	void addBase();
+	void addHouse();
 	void addRoof();
 private:
 	bool Render();
@@ -51,7 +52,7 @@ private:
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	std::vector<ModelClass*> m_Models;
+	vector<House*> m_Houses;
 	TextureShaderClass* m_TextureShader;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
@@ -69,20 +70,20 @@ static void TW_CALL MakeModel(void *clientData)
 
 }
 
-static void TW_CALL AddBase(void *clientData)
+static void TW_CALL AddHouse(void *clientData)
 {
 
 	auto base = static_cast<GraphicsClass*>(clientData);
-	base->addBase();
+	base->addHouse();
 }
 
-static void TW_CALL AddRoof(void *clientData)
-{
-	auto roof = static_cast<GraphicsClass*>(clientData);
-	roof->addRoof();
-}
-
-
+//static void TW_CALL AddRoof(void *clientData)
+//{
+//	auto roof = static_cast<GraphicsClass*>(clientData);
+//	roof->addRoof();
+//}
+//
+//
 
 
 #endif

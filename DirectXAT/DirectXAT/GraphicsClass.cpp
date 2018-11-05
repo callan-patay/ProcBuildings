@@ -73,24 +73,25 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	ModelClass* m_Model = new ModelClass();
-	// Initialize the model objct.
-	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/Exports/House.tga", "../DirectXAT/cube.txt", 1);
-			
-	m_Models.push_back(m_Model);
-	TwBar *myBar;
-	myBar = TwNewBar("Menu");
-	int barSize[2] = { 250, 250 };
-	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
+	//ModelClass* m_Model = new ModelClass();
+	//// Initialize the model objct.
+	//m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/Exports/House.tga", "../DirectXAT/cube.txt");
+	//		
+	//m_Models.push_back(m_Model);
 
 
 
 	TwInit(TW_DIRECT3D11, m_D3D->GetDevice());
 	TwWindowSize(screenWidth, screenHeight);
 
+	TwBar *myBar;
+	myBar = TwNewBar("Menu");
+	int barSize[2] = { 250, 250 };
+	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
-
-	
+	House* m_House = new House();
+	m_House->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), 1);
+	m_Houses.push_back(m_House);
 
 	// Create the model object.
 
@@ -129,8 +130,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Light G", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.y, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Light B", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.z, "Group='Light' min=0 max=1.0 step=0.05");
 
-	TwAddButton(myBar, "Add Base", AddBase, this, "Group='Create' label='Adds a Base'");
-	TwAddButton(myBar, "Add Roof", AddRoof, this, "Group='Create' label='Adds a Roof'");
+	TwAddButton(myBar, "Add House", AddHouse, this, "Group='Create' label='Adds a House'");
+	//TwAddButton(myBar, "Add Roof", AddRoof, this, "Group='Create' label='Adds a Roof'");
 	TwAddButton(myBar, "Export", MakeModel, this, "Group='Create' label='Creates Model'");
 	//TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
@@ -173,11 +174,14 @@ void GraphicsClass::Shutdown()
 		m_LightShader = 0;
 	}
 	// Release the model object.
-	for (int i = 0; i < m_Models.size(); i++)
+
+	for (int i = 0; i < m_Houses.size(); i++)
 	{
-		delete m_Models[i];
-		m_Models[i] = 0;
+		delete m_Houses[i];
+		m_Houses[i] = 0;
 	}
+
+
 
 	// Release the camera object.
 	if (m_Camera)
@@ -213,15 +217,10 @@ bool GraphicsClass::Frame(float& dt)
 	//}
 
 
-
-
-	// Update the rotation variable each frame.
-	for (int i = 0; i < m_Models.size(); i++)
+	for (int i = 0; i < m_Houses.size(); i++)
 	{
-		m_Models[i]->Tick(dt);
+		m_Houses[i]->Tick();
 	}
-
-	
 	
 	result = Render();
 	if (!result)
@@ -233,25 +232,21 @@ bool GraphicsClass::Frame(float& dt)
 
 void GraphicsClass::makeBuilding()
 {
-	ObjExporter::Create(m_Models);
+	//ObjExporter::Create();
 }
 
-void GraphicsClass::addBase()
+void GraphicsClass::addHouse()
 {
-	ModelClass* m_Model = new ModelClass();
+	House* m_Model = new House();
 	// Initialize the model objct.
-	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/Exports/House.tga", "../DirectXAT/cube.txt", m_Models.size()+1);
+	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), m_Houses.size()+1);
 	//m_Model->setPosition(posX, posY, 0.0f);
-	m_Models.push_back(m_Model);
+	m_Houses.push_back(m_Model);
 }
 
 void GraphicsClass::addRoof()
 {
-	ModelClass* m_Model = new ModelClass();
-	// Initialize the model objct.
-	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), "../DirectXAT/Exports/House.tga", "../DirectXAT/roof.txt", m_Models.size() + 1);
-	//m_Model->setPosition(posX, posY, 0.0f);
-	m_Models.push_back(m_Model);
+
 }
 
 
@@ -275,25 +270,35 @@ bool GraphicsClass::Render()
 
 
 
-	for (int i = 0; i < m_Models.size(); i++)
+
+	for (int i = 0; i < m_Houses.size(); i++)
 	{
 
-		worldMatrix = m_Models[i]->getWorldMat();
-
-		// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-		m_Models[i]->Render(m_D3D->GetDeviceContext());
 
 
-		// Render the model using the light shader.
-		result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Models[i]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-			m_Models[i]->GetTexture(), m_Light->GetDirection(),m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+		for (int p = 0; p < m_Houses[i]->getHouesParts().size(); p++)
+		{
+
+			worldMatrix = m_Houses[i]->getHouesParts()[p]->getWorldMat();
+
+			m_Houses[i]->getHouesParts()[p]->Render(m_D3D->GetDeviceContext());
+
+
+			result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Houses[i]->getHouesParts()[p]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+				m_Houses[i]->getHouesParts()[p]->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+		}
+		m_Houses[i]->Render(m_D3D->GetDeviceContext());
 	}
 
 
-	if (!result)
-	{
-		return false;
-	}
+
+
+
+
+	//if (!result)
+	//{
+	//	return false;
+	//}
 
 
 	TwDraw();

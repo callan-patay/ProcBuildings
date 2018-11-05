@@ -26,16 +26,14 @@ ModelClass::~ModelClass()
 {
 }
 
-bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, char* modelFilename, int modelNum)
+bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, char* modelFilename)
 {
 	bool result;
 
 
-	TwInit(TW_DIRECT3D11, device);
-	TwWindowSize(800, 600);
 
 
-	std::stringstream strs;
+	/*std::stringstream strs;
 	strs << "Model " << modelNum;
 
 	std::string barname = strs.str();
@@ -59,7 +57,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 
 	TwAddVarRW(myBar, "scale X", TW_TYPE_FLOAT, &m_scale.x, "Group='Scale' min=-100 max=100 step=0.1");
 	TwAddVarRW(myBar, "scale Y", TW_TYPE_FLOAT, &m_scale.y, "Group='Scale' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "scale Z", TW_TYPE_FLOAT, &m_scale.z, "Group='Scale' min=-100 max=100 step=0.1");
+	TwAddVarRW(myBar, "scale Z", TW_TYPE_FLOAT, &m_scale.z, "Group='Scale' min=-100 max=100 step=0.1");*/
 
 
 
@@ -121,7 +119,6 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
-	TwDraw();
 
 	return;
 }
@@ -275,7 +272,6 @@ void ModelClass::ShutdownBuffers()
 	}
 
 
-	TwTerminate();
 
 	return;
 }
@@ -495,7 +491,7 @@ void ModelClass::setPosition(float x, float y, float z)
 	m_pos.z = z;
 }
 
-void ModelClass::Tick(float& dt)
+void ModelClass::Tick()
 {
 
 
@@ -532,6 +528,18 @@ float ModelClass::getPitch()
 Texture ModelClass::getTextureType()
 {
 	return TextureType;
+}
+
+XMFLOAT3 ModelClass::getScale()
+{
+	return m_scale;
+}
+
+void ModelClass::setScale(float x, float y, float z)
+{
+	m_scale.x = x;
+	m_scale.y = y;
+	m_scale.z = z;
 }
 
 

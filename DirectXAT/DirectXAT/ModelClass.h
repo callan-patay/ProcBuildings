@@ -59,7 +59,7 @@ public:
 	ModelClass();
 	ModelClass(const ModelClass&);
 	~ModelClass();	
-	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*, char*, int);
+	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*, char*);
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 	void SetTexture(TextureClass*);
@@ -72,12 +72,13 @@ public:
 	XMMATRIX getWorldMat();
 	XMMATRIX getTransMat();
 	void setPosition(float, float, float);
-	void Tick(float&);
+	void Tick();
 	float getRoll();
 	float getYaw();
 	float getPitch();
 	Texture getTextureType();
-
+	XMFLOAT3 getScale();
+	void setScale(float, float, float);
 
 	float m_roll;
 	float m_pitch, m_yaw;
@@ -85,10 +86,10 @@ public:
 	vector<ModelType> GetModel();
 	vector<long> GetIndices();
 	Texture TextureType;
+	void RenderBuffers(ID3D11DeviceContext*);
 private:
 	void ShutdownBuffers();
 	void ReleaseTexture();
-	void RenderBuffers(ID3D11DeviceContext*);
 private:
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount;
