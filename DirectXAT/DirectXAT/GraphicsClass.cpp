@@ -131,7 +131,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Light B", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.z, "Group='Light' min=0 max=1.0 step=0.05");
 
 	TwAddButton(myBar, "Add House", AddHouse, this, "Group='Create' label='Adds a House'");
-	TwAddButton(myBar, "Add Skyscraper", AddSkyscraper, this, "Group='Create' label='Adds a Roof'");
+	TwAddButton(myBar, "Add Skyscraper", AddSkyscraper, this, "Group='Create' label='Adds a Skyscraper'");
 	TwAddButton(myBar, "Export", MakeModel, this, "Group='Create' label='Creates Model'");
 	//TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
