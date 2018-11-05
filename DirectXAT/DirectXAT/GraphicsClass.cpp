@@ -130,9 +130,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Light G", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.y, "Group='Light' min=0 max=1.0 step=0.05");
 	TwAddVarRW(myBar, "Light B", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.z, "Group='Light' min=0 max=1.0 step=0.05");
 
-	TwAddButton(myBar, "Add House", AddHouse, this, "Group='Create' label='Adds a House'");
-	TwAddButton(myBar, "Add Skyscraper", AddSkyscraper, this, "Group='Create' label='Adds a Skyscraper'");
-	TwAddButton(myBar, "Export", MakeModel, this, "Group='Create' label='Creates Model'");
+	TwAddButton(myBar, "Add House", AddHouse, this, "Group='Create' label='Add a House'");
+	TwAddButton(myBar, "Add Skyscraper", AddSkyscraper, this, "Group='Create' label='Add a Skyscraper'");
+	TwAddButton(myBar, "Export", MakeModel, this, "Group='Export Model' label='Creates Model'");
 	//TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
 	// Initialize the texture shader object.
@@ -254,7 +254,7 @@ void GraphicsClass::addSkyscraper()
 {
 	Skyscraper* m_Model = new Skyscraper();
 	// Initialize the model objct.
-	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), m_Houses.size() + 1);
+	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), m_Skyscrapers.size() + 1);
 	//m_Model->setPosition(posX, posY, 0.0f);
 	m_Skyscrapers.push_back(m_Model);
 }

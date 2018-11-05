@@ -33,7 +33,7 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 	ModelClass* Roof = new ModelClass();
 
 	Roof->Initialize(device, deviceContext, "../DirectXAT/Exports/House.tga", "../DirectXAT/Roof.txt");
-	
+	Roof->TextureType = Texture::WOOD;
 
 	m_House.push_back(Roof);
 
