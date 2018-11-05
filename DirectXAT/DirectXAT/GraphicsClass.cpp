@@ -131,7 +131,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(myBar, "Light B", TW_TYPE_FLOAT, &m_Light->m_diffuseColor.z, "Group='Light' min=0 max=1.0 step=0.05");
 
 	TwAddButton(myBar, "Add House", AddHouse, this, "Group='Create' label='Adds a House'");
-	//TwAddButton(myBar, "Add Roof", AddRoof, this, "Group='Create' label='Adds a Roof'");
+	TwAddButton(myBar, "Add Skyscraper", AddSkyscraper, this, "Group='Create' label='Adds a Roof'");
 	TwAddButton(myBar, "Export", MakeModel, this, "Group='Create' label='Creates Model'");
 	//TwAddVarRW(myBar, "CreateModel", TW_TYPE_BOOLCPP, &makeModel, "key=space");
 
@@ -222,6 +222,12 @@ bool GraphicsClass::Frame(float& dt)
 		m_Houses[i]->Tick();
 	}
 	
+	for (int i = 0; i < m_Skyscrapers.size(); i++)
+	{
+		m_Skyscrapers[i]->Tick();
+	}
+
+
 	result = Render();
 	if (!result)
 	{
@@ -232,7 +238,7 @@ bool GraphicsClass::Frame(float& dt)
 
 void GraphicsClass::makeBuilding()
 {
-	//ObjExporter::Create();
+	ObjExporter::Create(m_Houses, m_Skyscrapers);
 }
 
 void GraphicsClass::addHouse()
@@ -244,9 +250,13 @@ void GraphicsClass::addHouse()
 	m_Houses.push_back(m_Model);
 }
 
-void GraphicsClass::addRoof()
+void GraphicsClass::addSkyscraper()
 {
-
+	Skyscraper* m_Model = new Skyscraper();
+	// Initialize the model objct.
+	m_Model->Initialize(m_D3D->GetDevice(), m_D3D->GetDeviceContext(), m_Houses.size() + 1);
+	//m_Model->setPosition(posX, posY, 0.0f);
+	m_Skyscrapers.push_back(m_Model);
 }
 
 
@@ -276,20 +286,38 @@ bool GraphicsClass::Render()
 
 
 
-		for (int p = 0; p < m_Houses[i]->getHouesParts().size(); p++)
+		for (int p = 0; p < m_Houses[i]->getHouseParts().size(); p++)
 		{
 
-			worldMatrix = m_Houses[i]->getHouesParts()[p]->getWorldMat();
+			worldMatrix = m_Houses[i]->getHouseParts()[p]->getWorldMat();
 
-			m_Houses[i]->getHouesParts()[p]->Render(m_D3D->GetDeviceContext());
+			m_Houses[i]->getHouseParts()[p]->Render(m_D3D->GetDeviceContext());
 
 
-			result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Houses[i]->getHouesParts()[p]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-				m_Houses[i]->getHouesParts()[p]->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+			result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Houses[i]->getHouseParts()[p]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+				m_Houses[i]->getHouseParts()[p]->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
 		}
 		m_Houses[i]->Render(m_D3D->GetDeviceContext());
 	}
 
+	for (int i = 0; i < m_Skyscrapers.size(); i++)
+	{
+
+
+
+		for (int p = 0; p < m_Skyscrapers[i]->getSkyscraperParts().size(); p++)
+		{
+
+			worldMatrix = m_Skyscrapers[i]->getSkyscraperParts()[p]->getWorldMat();
+
+			m_Skyscrapers[i]->getSkyscraperParts()[p]->Render(m_D3D->GetDeviceContext());
+
+
+			result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Skyscrapers[i]->getSkyscraperParts()[p]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+				m_Skyscrapers[i]->getSkyscraperParts()[p]->GetTexture(), m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+		}
+		m_Skyscrapers[i]->Render(m_D3D->GetDeviceContext());
+	}
 
 
 

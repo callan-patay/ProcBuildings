@@ -2,7 +2,7 @@
 #include <vector>
 #include "ModelClass.h"
 #include <DirectXMath.h>
-
+#include <AntTweakBar.h>
 using namespace std;
 using namespace DirectX;
 
@@ -17,7 +17,7 @@ public:
 	void Initialize(ID3D11Device*, ID3D11DeviceContext*, int);
 
 	void Render(ID3D11DeviceContext*);
-
+	void applyValues();
 
 	void Tick();
 
@@ -26,11 +26,18 @@ public:
 
 private:
 
-
+	ID3D11Device * m_device;
+	ID3D11DeviceContext * m_deviceContext;
 	vector<ModelClass*> m_Skyscraper;
 	XMFLOAT3 m_pos;
-	XMFLOAT3 m_scale;
 	int height;
 	float width;
 	float depth;
 };
+
+
+static void TW_CALL ApplyValues(void *clientData)
+{
+	auto skyscraper = static_cast<Skyscraper*>(clientData);
+	skyscraper->applyValues();
+}

@@ -22,7 +22,7 @@ public:
 
 	void Tick();
 
-	vector<ModelClass*> getHouesParts();
+	vector<ModelClass*> getHouseParts();
 
 
 private:

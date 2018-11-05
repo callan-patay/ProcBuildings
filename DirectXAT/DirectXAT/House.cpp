@@ -110,7 +110,7 @@ void House::Tick()
 
 }
 
-vector<ModelClass*> House::getHouesParts()
+vector<ModelClass*> House::getHouseParts()
 {
 	return m_House;
 }
