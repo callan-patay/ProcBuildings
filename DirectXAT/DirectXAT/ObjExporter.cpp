@@ -13,13 +13,16 @@ using namespace DirectX;
 void ObjExporter::Create(vector<House*> houses, vector<Skyscraper*> skyscrapers)
 {
 	
-		ofstream file("Exports/House.obj");
+		
 		ofstream mtlfile("Exports/House.mtl");
-		file << "mtllib House.mtl" << endl;
-		long lastface = 0;
+		
+		
 
 		for (int c = 0; c < houses.size(); c++)
 		{
+			long lastface = 0;
+			ofstream file("Exports/" + houses[c]->getBuildingName() +".obj");
+			file << "mtllib House.mtl" << endl;
 			for (int i = 0; i < houses[c]->getHouseParts().size(); i++)
 			{
 
@@ -123,11 +126,15 @@ void ObjExporter::Create(vector<House*> houses, vector<Skyscraper*> skyscrapers)
 
 
 			}
+			file.close();
 		}
 
 
 		for (int c = 0; c < skyscrapers.size(); c++)
 		{
+			long lastface = 0;
+			ofstream file("Exports/" + skyscrapers[c]->getBuildingName() + ".obj");
+			file << "mtllib House.mtl" << endl;
 			for (int i = 0; i < skyscrapers[c]->getSkyscraperParts().size(); i++)
 			{
 
@@ -231,6 +238,7 @@ void ObjExporter::Create(vector<House*> houses, vector<Skyscraper*> skyscrapers)
 
 
 			}
+			file.close();
 		}
 		mtlfile << "newmtl House" << endl;
 		mtlfile << "d 1" << endl;
@@ -266,6 +274,6 @@ void ObjExporter::Create(vector<House*> houses, vector<Skyscraper*> skyscrapers)
 
 		mtlfile.close();
 
-		file.close();
+	
 
 }

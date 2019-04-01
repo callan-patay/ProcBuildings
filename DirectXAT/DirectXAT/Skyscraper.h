@@ -22,7 +22,7 @@ public:
 	void Tick();
 
 	vector<ModelClass*> getSkyscraperParts();
-
+	string getBuildingName();
 
 private:
 
@@ -30,6 +30,7 @@ private:
 	ID3D11DeviceContext * m_deviceContext;
 	vector<ModelClass*> m_Skyscraper;
 	XMFLOAT3 m_pos;
+	string barname = " ";
 	int height;
 	float width;
 	float depth;

@@ -44,7 +44,7 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 	std::stringstream strs;
 	strs << "House " << modelNum;
 
-	std::string barname = strs.str();
+	barname = strs.str();
 
 	TwBar *myBar;
 	myBar = TwNewBar(barname.c_str());
@@ -113,4 +113,9 @@ void House::Tick()
 vector<ModelClass*> House::getHouseParts()
 {
 	return m_House;
+}
+
+string House::getBuildingName()
+{
+	return barname;
 }

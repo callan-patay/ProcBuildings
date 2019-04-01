@@ -50,7 +50,7 @@ void Skyscraper::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceC
 	std::stringstream strs;
 	strs << "Skyscraper " << modelNum;
 
-	std::string barname = strs.str();
+	barname = strs.str();
 
 	TwBar *myBar;
 	myBar = TwNewBar(barname.c_str());
@@ -110,4 +110,9 @@ void Skyscraper::Tick()
 vector<ModelClass*> Skyscraper::getSkyscraperParts()
 {
 	return m_Skyscraper;
+}
+
+string Skyscraper::getBuildingName()
+{
+	return barname;
 }

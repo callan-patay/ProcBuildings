@@ -24,11 +24,12 @@ public:
 
 	vector<ModelClass*> getHouseParts();
 
-
+	string getBuildingName();
 private:
 
 
 	vector<ModelClass*> m_House;
+	string barname = " ";
 	XMFLOAT3 m_pos;
 	XMFLOAT3 m_scale;
 
