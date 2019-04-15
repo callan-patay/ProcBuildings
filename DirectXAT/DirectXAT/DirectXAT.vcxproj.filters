@@ -155,5 +155,8 @@
     <Text Include="Cube.txt">
       <Filter>Source Files\TextFiles</Filter>
     </Text>
+    <Text Include="Roof.txt">
+      <Filter>Source Files\TextFiles</Filter>
+    </Text>
   </ItemGroup>
 </Project>

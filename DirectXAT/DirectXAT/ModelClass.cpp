@@ -31,37 +31,6 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	bool result;
 
 
-
-
-	/*std::stringstream strs;
-	strs << "Model " << modelNum;
-
-	std::string barname = strs.str();
-
-	TwBar *myBar;
-	myBar = TwNewBar(barname.c_str() );
-	int barSize[2] = { 150, 100 };
-	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
-
-
-	TwEnumVal TextureTypeEV[] = { {BRICK, "Brick"}, {HOUSE, "House"}, {WOOD, "Wood"}, {SKYSCRAPER, "Skyscraper"} };
-	TwType TextureTypeTw = TwDefineEnum("TextureType", TextureTypeEV, 4);
-	TwAddVarRW(myBar, "Texture", TextureTypeTw, &TextureType, NULL);
-	TwAddVarRW(myBar, "Roll", TW_TYPE_FLOAT, &m_roll, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
-	TwAddVarRW(myBar, "Pitch", TW_TYPE_FLOAT,&m_pitch, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
-	TwAddVarRW(myBar, "Yaw", TW_TYPE_FLOAT, &m_yaw, "Group='Rotation' min=-100 max=360 step=0.0174532925f");
-
-	TwAddVarRW(myBar, "X", TW_TYPE_FLOAT, &m_pos.x, "Group='Position' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "Y", TW_TYPE_FLOAT, &m_pos.y, "Group='Position' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "Z", TW_TYPE_FLOAT, &m_pos.z, "Group='Position' min=-100 max=100 step=0.1");
-
-	TwAddVarRW(myBar, "scale X", TW_TYPE_FLOAT, &m_scale.x, "Group='Scale' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "scale Y", TW_TYPE_FLOAT, &m_scale.y, "Group='Scale' min=-100 max=100 step=0.1");
-	TwAddVarRW(myBar, "scale Z", TW_TYPE_FLOAT, &m_scale.z, "Group='Scale' min=-100 max=100 step=0.1");*/
-
-
-
-
 	// Load in the model data,
 	result = LoadModel(modelFilename);
 	if (!result)

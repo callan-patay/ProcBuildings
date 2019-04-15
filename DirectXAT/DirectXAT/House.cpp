@@ -40,7 +40,6 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 	TwInit(TW_DIRECT3D11, device);
 	TwWindowSize(800, 600);
 
-
 	std::stringstream strs;
 	strs << "House " << modelNum;
 
@@ -51,11 +50,8 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 	int barSize[2] = { 150, 100 };
 	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
-
 	TwEnumVal TextureTypeEV[] = { {BRICK, "Brick"}, {HOUSE, "House"}, {WOOD, "Wood"}, {SKYSCRAPER, "Skyscraper"} };
 	TwType TextureTypeTw = TwDefineEnum("TextureType", TextureTypeEV, 4);
-
-
 
 	TwAddVarRW(myBar, "House Texture", TextureTypeTw, &m_House[0]->TextureType, NULL);
 	TwAddVarRW(myBar, "Roof Texture", TextureTypeTw, &m_House[1]->TextureType, NULL);
@@ -68,46 +64,27 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 	TwAddVarRW(myBar, "scale Y", TW_TYPE_FLOAT, &m_scale.y, "Group='Scale' min=-100 max=100 step=0.1");
 	TwAddVarRW(myBar, "scale Z", TW_TYPE_FLOAT, &m_scale.z, "Group='Scale' min=-100 max=100 step=0.1");
 	TwAddVarRW(myBar, "Roof Scale Y", TW_TYPE_FLOAT, &m_House[1]->m_scale.y, "Group='Scale' min =-100 max=100 step=0.1");
-
-
-
-
-
-
-
 }
 
 void House::Render(ID3D11DeviceContext * deviceContext)
 {
-
-	//for (int i = 0; i < m_House.size(); i++)
-	//{
-	//	m_House[i].RenderBuffers(deviceContext);
-	//}
-
-
-
 	TwDraw();
 }
 
 void House::Tick()
 {
-
+	//building position and scale
 	m_House[0]->setPosition(m_pos.x, m_pos.y, m_pos.z);
-	m_House[1]->setPosition(m_pos.x, m_pos.y + m_House[1]->getScale().y + m_House[0]->getScale().y, m_pos.z);
-
 	m_House[0]->setScale(m_scale.x, m_scale.y, m_scale.z);
-	m_House[1]->setScale(m_scale.x, m_House[1]->getScale().y, m_scale.z);
 
+	//roof position and scale
+	m_House[1]->setPosition(m_pos.x, m_pos.y + m_House[1]->getScale().y + m_House[0]->getScale().y, m_pos.z);
+	m_House[1]->setScale(m_scale.x, m_House[1]->getScale().y, m_scale.z);
 
 	for (int i = 0; i < m_House.size(); i++)
 	{
 		m_House[i]->Tick();
 	}
-
-
-
-
 }
 
 vector<ModelClass*> House::getHouseParts()
