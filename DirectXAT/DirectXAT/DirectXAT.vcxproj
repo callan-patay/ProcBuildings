@@ -67,7 +67,6 @@
     <Image Include="Exports\House.tga" />
     <Image Include="Exports\Skyscraper.tga" />
     <Image Include="Exports\Wood.tga" />
-    <Image Include="z.dds" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Cube.txt" />

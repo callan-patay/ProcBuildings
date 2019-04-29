@@ -13,7 +13,7 @@ ModelClass::ModelClass()
 	m_Texture2 = 0;
 	m_Texture3 = 0;
 	m_worldMat = XMMatrixIdentity();
-	m_fudge = XMMatrixIdentity();
+	m_identity = XMMatrixIdentity();
 }
 
 
@@ -436,9 +436,8 @@ bool ModelClass::LoadModel(char* filename)
 
 void ModelClass::ReleaseModel()
 {
-
-
-
+	delete m_vertexBuffer;
+	delete m_indexBuffer;
 
 	return;
 }
@@ -462,22 +461,11 @@ void ModelClass::setPosition(float x, float y, float z)
 
 void ModelClass::Tick()
 {
-
-
 	XMMATRIX scaleMat = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotMat = XMMatrixRotationRollPitchYaw(m_roll, m_pitch, m_yaw);
-
 	transMat = XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
-	
-
-
-	m_worldMat = m_fudge *scaleMat* rotMat*  transMat;
-
-
-
+	m_worldMat = m_identity *scaleMat* rotMat*  transMat;
 }
-
-
 
 float ModelClass::getRoll()
 {

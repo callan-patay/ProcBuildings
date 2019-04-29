@@ -97,7 +97,7 @@ private:
 	vector<long> indicesVector;
 	TextureClass* m_Texture, *m_Texture1, *m_Texture2, *m_Texture3;
 	vector<ModelType> m_model;
-	XMMATRIX m_worldMat, m_fudge;
+	XMMATRIX m_worldMat, m_identity;
 	XMMATRIX transMat;
 	
 

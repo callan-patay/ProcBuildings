@@ -135,9 +135,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="z.dds">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Exports\Brick.tga">
       <Filter>Resource Files</Filter>
     </Image>
