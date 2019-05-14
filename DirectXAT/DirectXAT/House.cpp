@@ -38,7 +38,7 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 	m_House.push_back(Roof);
 
 	TwInit(TW_DIRECT3D11, device);
-	TwWindowSize(800, 600);
+	TwWindowSize(1600, 900);
 
 	std::stringstream strs;
 	strs << "House " << modelNum;
@@ -47,7 +47,7 @@ void House::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceContex
 
 	TwBar *myBar;
 	myBar = TwNewBar(barname.c_str());
-	int barSize[2] = { 150, 100 };
+	int barSize[2] = { 200, 225 };
 	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
 	TwEnumVal TextureTypeEV[] = { {BRICK, "Brick"}, {HOUSE, "House"}, {WOOD, "Wood"}, {SKYSCRAPER, "Skyscraper"} };

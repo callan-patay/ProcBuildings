@@ -67,7 +67,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	TwInit(TW_DIRECT3D11, m_D3D->GetDevice());
-	TwWindowSize(screenWidth, screenHeight);
+	TwWindowSize(1600, 900);
 
 	TwBar *myBar;
 	myBar = TwNewBar("Menu");

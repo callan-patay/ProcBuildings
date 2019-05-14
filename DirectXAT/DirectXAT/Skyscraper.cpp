@@ -44,7 +44,7 @@ void Skyscraper::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceC
 	m_deviceContext = deviceContext;
 
 	TwInit(TW_DIRECT3D11, device);
-	TwWindowSize(800, 600);
+	TwWindowSize(1600, 900);
 
 
 	std::stringstream strs;
@@ -54,7 +54,7 @@ void Skyscraper::Initialize(ID3D11Device * device, ID3D11DeviceContext * deviceC
 
 	TwBar *myBar;
 	myBar = TwNewBar(barname.c_str());
-	int barSize[2] = { 150, 100 };
+	int barSize[2] = { 200, 200 };
 	TwSetParam(myBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
 
