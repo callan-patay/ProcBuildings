@@ -38,6 +38,7 @@ using namespace DirectX;
 		WOOD,
 		SKYSCRAPER
 	};
+
 class ModelClass
 {
 private:

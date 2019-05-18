@@ -85,7 +85,6 @@ void Skyscraper::applyValues()
 
 	m_Skyscraper.clear();
 
-
 	for (int i = 0; i < height; i++)
 	{
 		ModelClass* buildingblock = new ModelClass();

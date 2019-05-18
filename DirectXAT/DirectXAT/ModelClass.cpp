@@ -120,15 +120,11 @@ ID3D11ShaderResourceView* ModelClass::GetTexture()
 	{
 		return m_Texture3->GetTexture();
 	}
-
-
-
 }
 
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	VertexType* vertices;
-	indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;

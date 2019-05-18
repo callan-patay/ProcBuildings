@@ -35,7 +35,6 @@ XMFLOAT4 LightClass::GetAmbientColor()
 void LightClass::SetDirection(float x, float y, float z)
 {
 	m_direction = XMFLOAT3(x, y, z);
-	return;
 }
 
 
